@@ -1,0 +1,9 @@
+LandisData   Extension
+
+Name         "Wildlife Habitat Output"
+Version      "1.0"
+Type         output
+Assembly     Landis.Extension.Output.WildlifeHabitat
+Class        Landis.Extension.Output.WildlifeHabitat.PlugIn
+Description  "Wildlife habitat suitability output"
+CoreVersion  6.0

@@ -1,0 +1,12 @@
+LandisData  "Wildlife Habitat Output"
+
+Timestep  1
+
+OutputTimestep  10
+
+MapFileNames	output/habitat/{wildlifeName}-{timestep}.img
+
+SuitabilityFiles  	ageclass_foresttype_example.txt
+			ageclass_tsf_example.txt
+			foresttype_tsf_example.txt
+
