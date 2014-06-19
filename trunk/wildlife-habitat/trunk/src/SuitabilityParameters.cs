@@ -17,6 +17,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private double[] coefficients;
         private List<IMapDefinition> forestTypes;
         private Dictionary<int,double> fireSeverities;
+        private Dictionary<string, double> harvestPrescriptions;
         private Dictionary<string,Dictionary<int,double>> suitabilities;
       
         //---------------------------------------------------------------------
@@ -82,6 +83,18 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
+        public Dictionary<string, double> HarvestPrescriptions
+        {
+            get
+            {
+                return harvestPrescriptions;
+            }
+            set
+            {
+                harvestPrescriptions = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public Dictionary<string,Dictionary<int, double>> Suitabilities
         {
             get
@@ -101,7 +114,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
             coefficients = new double[speciesCount];
             forestTypes = new List<IMapDefinition>();
-            fireSeverities = new Dictionary<int,double>();
+            fireSeverities = new Dictionary<int, double>();
+            harvestPrescriptions = new Dictionary<string, double>();
             suitabilities = new Dictionary<string,Dictionary<int,double>>();
         }
 

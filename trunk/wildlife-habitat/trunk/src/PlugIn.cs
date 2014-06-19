@@ -76,35 +76,49 @@ namespace Landis.Extension.Output.WildlifeHabitat
         /// </param>
         public override void Run()
         {
-            /*foreach (IMapDefinition map in mapDefs)
+            foreach (string suitabilityFile in suitabilityFiles)
             {
-                List<IForestType> forestTypes = map.ForestTypes;
+                // get suitability parameters
 
-                string path = MapFileNames.ReplaceTemplateVars(mapNameTemplate, map.Name, modelCore.CurrentTime);
-                modelCore.Log.WriteLine("   Writing Biomass Reclass map to {0} ...", path);
-                using (IOutputRaster<BytePixel> outputRaster = modelCore.CreateRaster<BytePixel>(path, modelCore.Landscape.Dimensions))
+                // foreach (Site site in modelCore.Landscape.AllSites)
+                //{
+                // depending on suitability type, calculate final suitability value
+
+                // for AgeClass_ForestType:
+                // calculate forest type
+                // 
+                //}
+
+                /*Copied from biomass-reclass
+                 * foreach (IMapDefinition map in mapDefs)
                 {
-                    BytePixel pixel = outputRaster.BufferPixel;
-                    foreach (Site site in modelCore.Landscape.AllSites)
+                    List<IForestType> forestTypes = map.ForestTypes;
+
+                    string path = MapFileNames.ReplaceTemplateVars(mapNameTemplate, map.Name, modelCore.CurrentTime);
+                    modelCore.Log.WriteLine("   Writing Biomass Reclass map to {0} ...", path);
+                    using (IOutputRaster<BytePixel> outputRaster = modelCore.CreateRaster<BytePixel>(path, modelCore.Landscape.Dimensions))
                     {
-                        if (site.IsActive)
-                            pixel.MapCode.Value = CalcForestType(forestTypes, site);
-                        else
-                            pixel.MapCode.Value = 0;
+                        BytePixel pixel = outputRaster.BufferPixel;
+                        foreach (Site site in modelCore.Landscape.AllSites)
+                        {
+                            if (site.IsActive)
+                                pixel.MapCode.Value = CalcForestType(forestTypes, site);
+                            else
+                                pixel.MapCode.Value = 0;
                         
-                        outputRaster.WriteBufferPixel();
+                            outputRaster.WriteBufferPixel();
+                        }
                     }
+
                 }
+                 * */
 
             }
-             * */
 
         }
-
-
         //---------------------------------------------------------------------
-
-        private byte CalcForestType(List<IForestType> forestTypes,
+        // Copied from biomass-reclass
+        private byte CalcForestTypeBiomass(List<IForestType> forestTypes,
                                     Site site)
         {
             int forTypeCnt = 0;
@@ -148,7 +162,85 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
             return (byte) finalForestType;
         }
+        //---------------------------------------------------------------------
+        // Copied from output-reclass
+        private byte CalcForestTypeAge(Site site, List<IForestType> forestTypes)
+        {
+            int forTypeCnt = 0;
+
+            double[] forTypValue = new double[forestTypes.Count];
+            foreach (ISpecies species in PlugIn.ModelCore.Species)
+            {
+                if (SiteVars.Cohorts[site] != null)
+                {
+                    ushort maxSpeciesAge = 0;
+                    double sppValue = 0.0;
+                    maxSpeciesAge = GetSppMaxAge(site, species);
 
 
+                    if (maxSpeciesAge > 0)
+                    {
+                        sppValue = (double)maxSpeciesAge /
+                            (double)species.Longevity *
+                            (double)reclassCoefs[species.Index];
+
+                        forTypeCnt = 0;
+                        foreach (IForestType ftype in forestTypes)
+                        {
+                            if (ftype[species.Index] != 0)
+                            {
+                                if (ftype[species.Index] == -1)
+                                    forTypValue[forTypeCnt] -= sppValue;
+                                if (ftype[species.Index] == 1)
+                                    forTypValue[forTypeCnt] += sppValue;
+                            }
+                            forTypeCnt++;
+                        }
+                    }
+                }
+            }
+
+            int finalForestType = 0;
+            double maxValue = 0.0;
+            forTypeCnt = 0;
+            foreach (IForestType ftype in forestTypes)
+            {
+                //System.Console.WriteLine("ForestTypeNum={0}, Value={1}.",forTypeCnt,forTypValue[forTypeCnt]);
+                if (forTypValue[forTypeCnt] > maxValue)
+                {
+                    maxValue = forTypValue[forTypeCnt];
+                    finalForestType = forTypeCnt + 1;
+                }
+                ModelCore.UI.WriteLine("ftype={0}, value={1}.", ftype.Name, forTypValue[forTypeCnt]);
+                forTypeCnt++;
+            }
+            return (byte)finalForestType;
+        }
+        //---------------------------------------------------------------------
+        // Copied from output-reclass
+        public static ushort GetSppMaxAge(Site site, ISpecies spp)
+        {
+            if (!site.IsActive)
+                return 0;
+
+            if (SiteVars.Cohorts[site] == null)
+            {
+                PlugIn.ModelCore.UI.WriteLine("Cohort are null.");
+                return 0;
+            }
+            ushort max = 0;
+
+            foreach (ISpeciesCohorts sppCohorts in SiteVars.Cohorts[site])
+            {
+                if (sppCohorts.Species == spp)
+                {
+                    //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
+                    foreach (ICohort cohort in sppCohorts)
+                        if (cohort.Age > max)
+                            max = cohort.Age;
+                }
+            }
+            return max;
+        }
     }
 }
