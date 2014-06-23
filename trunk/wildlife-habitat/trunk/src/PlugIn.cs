@@ -76,6 +76,16 @@ namespace Landis.Extension.Output.WildlifeHabitat
         /// </param>
         public override void Run()
         {
+            // foreach (Site site in modelCore.Landscape.AllSites)
+            //{
+            // calculate dominant age as site variable (DomAge), store for retreival
+            //  Note: DomAge site variable is an array of values giving dominant age for this year and last year
+
+            // calculate forest type as site variable (ForestType), store for retreival
+            //  Note: ForestType site variable is an array of values giving forest type for this year and last year
+            
+            //}
+
             foreach (string suitabilityFile in suitabilityFiles)
             {
                 // get suitability parameters
@@ -84,9 +94,71 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 //{
                 // depending on suitability type, calculate final suitability value
 
-                // for AgeClass_ForestType:
-                // calculate forest type
-                // 
+                // if suitabilityType == AgeClass_ForestType:
+                //   calculate forest type (CalcForestTypeBiomass or CalcForestTypeAge)
+                //   calculate dominant age among species in forest type
+                //   look up suitabilty in suitabilityTable for combination of forest type and age
+                //  write sitevar for suitability value
+                //  if output timestep then write to map
+
+                // if suitabilityType == AgeClass_TimeSinceDisturbance:
+                // if disturbanceType == "Fire" then:
+                //   Check this year fire severity
+                //   if > 0 then 
+                //      translate to suitability weight
+                //      if suitability weight > 0 then
+                //        store sitevar YearOfFire by wildlifeName
+                //        read previous year dominant age
+                //        store sitevar AgeAtFireYear by wildlifeName
+                //        store sitevar SuitabilityWeight by wildlifeName
+                //  read sitevar AgeAtFireYear for age value
+                //  read sitevar YearOfFire
+                //  calculate timeSinceDisturbance = currentYear - YearOfFire
+                // if disturbaceType == "Harvest" then:
+                //  Check this year harvest prescription names
+                //   if != null then 
+                //      translate to suitability weight
+                //      if suitability weight > 0 then
+                //        store sitevar YearOfHarvest by wildlifeName
+                //        read previous year dominant age
+                //        store sitevar AgeAtHarvestYear by wildlifeName
+                //        store sitevar SuitabilityWeight by wildlifeName
+                //  read sitevar AgeAtHarvestYear for age value
+                //  read sitevar YearOfHarvest
+                //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
+                //  look up suitabilty in suitabilityTable for combination of age and timeSinceDisturbance
+                // write sitevar for suitability value
+                // if output timestep then write to map
+
+                // if suitabilityType == ForestType_TimeSinceDisturbance:
+                //   calculate forest type (CalcForestTypeBiomass or CalcForestTypeAge)
+                // if disturbanceType == "Fire" then:
+                //   Check this year fire severity
+                //   if > 0 then 
+                //      translate to suitability weight
+                //      if suitability weight > 0 then
+                //        store sitevar YearOfFire by wildlifeName
+                //        read previous year forest type
+                //        store sitevar AgeAtFireYear by wildlifeName
+                //        store sitevar SuitabilityWeight by wildlifeName
+                //  read sitevar AgeAtFireYear for age value
+                //  read sitevar YearOfFire
+                //  calculate timeSinceDisturbance = currentYear - YearOfFire
+                // if disturbaceType == "Harvest" then:
+                //  Check this year harvest prescription names
+                //   if != null then 
+                //      translate to suitability weight
+                //      if suitability weight > 0 then
+                //        store sitevar YearOfHarvest by wildlifeName
+                //        read previous year forest type
+                //        store sitevar AgeAtHarvestYear by wildlifeName
+                //        store sitevar SuitabilityWeight by wildlifeName
+                //  read sitevar AgeAtHarvestYear for age value
+                //  read sitevar YearOfHarvest
+                //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
+                // look up suitabilty in suitabilityTable for combination of forest type and timeSinceDisturbance
+                // write sitevar for suitability value
+                // if output timestep then write to map
                 //}
 
                 /*Copied from biomass-reclass
@@ -118,8 +190,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
         }
         //---------------------------------------------------------------------
         // Copied from biomass-reclass
-        private byte CalcForestTypeBiomass(List<IForestType> forestTypes,
-                                    Site site)
+        // Added reclass coefficients
+        private string CalcForestTypeBiomass(List<IForestType> forestTypes,
+                                    Site site, double [] reclassCoeffs)
         {
             int forTypeCnt = 0;
 
@@ -129,10 +202,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
             {
                 double sppValue = 0.0;
 
-                if (SiteVars.Cohorts[site] == null)
+                if (SiteVars.BiomassCohorts[site] == null)
                     break;
 
-                sppValue = Util.ComputeBiomass(SiteVars.Cohorts[site][species]);
+                sppValue = Util.ComputeBiomass(SiteVars.BiomassCohorts[site][species]);
 
                 forTypeCnt = 0;
                 foreach(IForestType ftype in forestTypes)
@@ -140,9 +213,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     if(ftype[species.Index] != 0)
                     {
                         if(ftype[species.Index] == -1)
-                            forTypValue[forTypeCnt] -= sppValue;
+                            forTypValue[forTypeCnt] -= sppValue * reclassCoeffs[species.Index];
                         if(ftype[species.Index] == 1)
-                            forTypValue[forTypeCnt] += sppValue;
+                            forTypValue[forTypeCnt] += sppValue * reclassCoeffs[species.Index];
                     }
                     forTypeCnt++;
                 }
@@ -160,18 +233,19 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 }
                 forTypeCnt++;
             }
-            return (byte) finalForestType;
+            string forTypeName = forestTypes[finalForestType].Name;
+            return forTypeName;
         }
         //---------------------------------------------------------------------
         // Copied from output-reclass
-        private byte CalcForestTypeAge(Site site, List<IForestType> forestTypes)
+        private string CalcForestTypeAge(Site site, List<IForestType> forestTypes, double [] reclassCoefs)
         {
             int forTypeCnt = 0;
 
             double[] forTypValue = new double[forestTypes.Count];
             foreach (ISpecies species in PlugIn.ModelCore.Species)
             {
-                if (SiteVars.Cohorts[site] != null)
+                if (SiteVars.AgeCohorts[site] != null)
                 {
                     ushort maxSpeciesAge = 0;
                     double sppValue = 0.0;
@@ -214,7 +288,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 ModelCore.UI.WriteLine("ftype={0}, value={1}.", ftype.Name, forTypValue[forTypeCnt]);
                 forTypeCnt++;
             }
-            return (byte)finalForestType;
+            string forTypeName = forestTypes[finalForestType].Name;
+            return forTypeName;
         }
         //---------------------------------------------------------------------
         // Copied from output-reclass
@@ -222,22 +297,42 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
             if (!site.IsActive)
                 return 0;
-
-            if (SiteVars.Cohorts[site] == null)
-            {
-                PlugIn.ModelCore.UI.WriteLine("Cohort are null.");
-                return 0;
-            }
             ushort max = 0;
-
-            foreach (ISpeciesCohorts sppCohorts in SiteVars.Cohorts[site])
+            if (SiteVars.BiomassCohorts[site] == null)
             {
-                if (sppCohorts.Species == spp)
+                if (SiteVars.AgeCohorts[site] == null)
                 {
-                    //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
-                    foreach (ICohort cohort in sppCohorts)
-                        if (cohort.Age > max)
-                            max = cohort.Age;
+                    PlugIn.ModelCore.UI.WriteLine("Cohort are null.");
+                    return 0;
+                }
+                else
+                {
+                    max = 0;
+                    foreach (Landis.Library.AgeOnlyCohorts.ISpeciesCohorts sppCohorts in SiteVars.AgeCohorts[site])
+                    {
+                        if (sppCohorts.Species == spp)
+                        {
+                            //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
+                            foreach (Landis.Library.AgeOnlyCohorts.ICohort cohort in sppCohorts)
+                                if (cohort.Age > max)
+                                    max = cohort.Age;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                max = 0;
+
+                foreach (ISpeciesCohorts sppCohorts in SiteVars.AgeCohorts[site])
+                {
+                    if (sppCohorts.Species == spp)
+                    {
+                        //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
+                        foreach (ICohort cohort in sppCohorts)
+                            if (cohort.Age > max)
+                                max = cohort.Age;
+                    }
                 }
             }
             return max;

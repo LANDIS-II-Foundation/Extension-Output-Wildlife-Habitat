@@ -16,7 +16,7 @@ DisturbanceTable	Fire
 
 
 SuitabilityTable
-<< MaxTimeSinceFire	Maximum Age Values
+<< MaxTimeSinceDist	Maximum Age Values
 << ----------		-------------------
 			10	30	999
 <<			Suitability Values
