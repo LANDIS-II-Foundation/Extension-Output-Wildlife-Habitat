@@ -63,7 +63,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 		/// <summary>
 		/// Reclass maps
 		/// </summary>
-		public List<IMapDefinition> ForestTypes
+        public List<IMapDefinition> ForestTypes
 		{
 			get {
 				return forestTypes;
@@ -95,6 +95,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
+        // Dictionary with key equal to row names and
+        // values equal to a dictionary with key equal to column headings and
+        // values equal to suitability values
         public Dictionary<string,Dictionary<int, double>> Suitabilities
         {
             get

@@ -67,20 +67,22 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
             ISuitabilityParameters suitabilityParameters = Landis.Data.Load<ISuitabilityParameters>(suitabilityFile.Value, suitabilityParser);
             suitabilityParameterList.Add(suitabilityParameters);
+            parameters.SuitabilityFiles.Add(suitabilityFile.Name);
 
             while (!AtEndOfInput)
             {
                 StringReader currentLine = new StringReader(CurrentLine);
 
                 ReadValue(suitabilityFile, currentLine);
-                CheckForRepeatedName(suitabilityFile.Value, "suitabilty file", lineNumbers);
+                CheckForRepeatedName(suitabilityFile.Value, "suitability file", lineNumbers);
 
                 suitabilityParameters = Landis.Data.Load<ISuitabilityParameters>(suitabilityFile.Value, suitabilityParser);
                 suitabilityParameterList.Add(suitabilityParameters);
+                parameters.SuitabilityFiles.Add(suitabilityFile.Name);
                 
                 GetNextLine();
             }
-
+            parameters.SuitabilityParameters = suitabilityParameterList;
 
             CheckNoDataAfter(string.Format("the {0} parameter", "SuitabilityFiles"));
 

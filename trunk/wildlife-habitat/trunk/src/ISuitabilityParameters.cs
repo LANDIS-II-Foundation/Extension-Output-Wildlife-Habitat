@@ -47,12 +47,23 @@ namespace Landis.Extension.Output.WildlifeHabitat
             get;
         }
 
-        //---------------------------------------------------------------------/// <summary>
+        //---------------------------------------------------------------------
+        /// <summary>
         /// Suitability Table
         /// </summary>
         Dictionary<string, Dictionary<int, double>> Suitabilities
         {
             get;
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Suitability Type
+        /// </summary>
+       string SuitabilityType
+        {
+            get;
+
         }
 
         //---------------------------------------------------------------------
