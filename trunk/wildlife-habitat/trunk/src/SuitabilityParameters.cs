@@ -115,6 +115,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         /// </summary>
         public SuitabilityParameters(int speciesCount)
         {
+            wildlifeName = "wildlifeName";
             coefficients = new double[speciesCount];
             forestTypes = new List<IMapDefinition>();
             fireSeverities = new Dictionary<int, double>();

@@ -181,9 +181,28 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
                 // look up suitabilty in suitabilityTable for combination of forest type and timeSinceDisturbance
                 // write sitevar for suitability value
-
-                // if output timestep then write all maps
                 }
+                // if output timestep then write all maps
+                  if (ModelCore.CurrentTime == parameters.OutputTimestep)
+                  {
+                      string mapName = mySuitabilityParameters.WildlifeName;
+                      string path = MapFileNames.ReplaceTemplateVars(mapNameTemplate, mapName, modelCore.CurrentTime);
+                      ModelCore.UI.WriteLine("   Writing Wildlife Habitat Output map to {0} ...", path);
+                      using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path, modelCore.Landscape.Dimensions))
+                      {
+                          IntPixel pixel = outputRaster.BufferPixel;
+                          foreach (Site site in modelCore.Landscape.AllSites)
+                          {
+                              if (site.IsActive)
+                                  pixel.MapCode.Value = (int) (SiteVars.SuitabilityValue[site][index] * 100);
+                              else
+                                  pixel.MapCode.Value = 0;
+
+                              outputRaster.WriteBufferPixel();
+                          }
+                      }
+                  }
+                
 
                 /*Copied from biomass-reclass
                  * foreach (IMapDefinition map in mapDefs)

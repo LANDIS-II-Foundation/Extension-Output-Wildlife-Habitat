@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BytePixel.cs" />
+    <Compile Include="IntPixel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuitabilityParameters.cs" />
     <Compile Include="ISuitabilityParameters.cs" />

@@ -67,5 +67,15 @@ namespace Landis.Extension.Output.WildlifeHabitat
         }
 
         //---------------------------------------------------------------------
+       /// <summary>
+       /// Wildlife Name
+       /// </summary>
+       string WildlifeName
+       {
+           get;
+
+       }
+
+        //---------------------------------------------------------------------
     }
 }
