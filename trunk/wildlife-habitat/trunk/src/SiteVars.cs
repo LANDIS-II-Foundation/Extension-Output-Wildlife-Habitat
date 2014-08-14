@@ -16,11 +16,13 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<string> prescriptionName;
         private static ISiteVar<byte> fireSeverity;
 
-        private static ISiteVar<int> yearOfFire;
-        private static ISiteVar<int> yearOfHarvest;
+        private static ISiteVar<Dictionary<int, int>> yearOfFire;
+        private static ISiteVar<Dictionary<int, int>> yearOfHarvest;
         private static ISiteVar<Dictionary<int,int[]>> dominantAge;
         private static ISiteVar<Dictionary<int, int[]>> forestType;
         private static ISiteVar<Dictionary<int, double>> suitabilityValue;
+        private static ISiteVar<Dictionary<int, int>> ageAtFireYear;
+        
 
         //---------------------------------------------------------------------
 
@@ -31,8 +33,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
             prescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
             fireSeverity = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
 
-            yearOfFire = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            yearOfHarvest = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            yearOfFire = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int>>();
+            ageAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
+            yearOfHarvest = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
             suitabilityValue = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
@@ -42,10 +45,21 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 string mesg = string.Format("Cohorts are empty.  Please double-check that this extension is compatible with your chosen succession extension.");
                 throw new System.ApplicationException(mesg);
             }
-            SiteVars.YearOfFire.ActiveSiteValues = -999;
-            SiteVars.YearOfHarvest.ActiveSiteValues = -999;
+
             foreach (Site site in PlugIn.ModelCore.Landscape.ActiveSites)
             {
+                Dictionary<int, int> yofDict = new Dictionary<int, int>();
+                yofDict.Add(0, -99999);
+                SiteVars.YearOfFire[site] = yofDict;
+
+                Dictionary<int, int> ageFireDict = new Dictionary<int, int>();
+                ageFireDict.Add(0, 0);
+                SiteVars.AgeAtFireYear[site] = ageFireDict;
+
+                Dictionary<int, int> yohDict = new Dictionary<int, int>();
+                yohDict.Add(0, 0);
+                SiteVars.YearOfHarvest[site] = yohDict;
+
                 Dictionary<int, int[]> domAgeDict = new Dictionary<int, int[]>();
                 int[] domAgeArray = new int[2];
                 domAgeDict.Add(0, domAgeArray);
@@ -59,7 +73,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
                 suitValDict.Add(0, 0.0);
                 SiteVars.SuitabilityValue[site] = suitValDict;
-            }     
+
+            }
         }
        
         //---------------------------------------------------------------------
@@ -95,7 +110,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
-        public static ISiteVar<int> YearOfFire
+        public static ISiteVar<Dictionary<int, int>> YearOfFire
         {
             get
             {
@@ -107,7 +122,19 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
-        public static ISiteVar<int> YearOfHarvest
+        public static ISiteVar<Dictionary<int, int>> AgeAtFireYear
+        {
+            get
+            {
+                return ageAtFireYear;
+            }
+            set
+            {
+                ageAtFireYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public static ISiteVar<Dictionary<int, int>> YearOfHarvest
         {
             get
             {

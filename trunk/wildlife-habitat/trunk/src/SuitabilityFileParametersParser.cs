@@ -177,6 +177,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     {
                         InputVar<int> severityClass = new InputVar<int>("Fire Severity Class");
                         InputVar<double> fireSuitability = new InputVar<double>("Fire Class Suitability");
+                        suitabilityParameters.DisturbanceType = "Fire";
 
                         bool continueLoop = true;
                         while (continueLoop)
@@ -198,6 +199,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     {
                         InputVar<string> prescriptionName = new InputVar<string>("Prescription Name");
                         InputVar<double> prescriptionSuitability = new InputVar<double>("Prescription Suitability");
+                        suitabilityParameters.DisturbanceType = "Harvest";
 
                         bool continueLoop = true;
                         while (continueLoop)

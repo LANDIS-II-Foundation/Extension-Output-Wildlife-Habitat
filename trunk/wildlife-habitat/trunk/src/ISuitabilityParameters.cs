@@ -75,7 +75,15 @@ namespace Landis.Extension.Output.WildlifeHabitat
            get;
 
        }
+       //---------------------------------------------------------------------
+       /// <summary>
+       /// DisturbanceType
+       /// </summary>
+       string DisturbanceType
+       {
+           get;
 
+       }
         //---------------------------------------------------------------------
     }
 }

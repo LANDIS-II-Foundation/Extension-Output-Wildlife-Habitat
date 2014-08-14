@@ -6,8 +6,8 @@ OutputTimestep  10
 
 MapFileNames	output/habitat/{wildlifeName}-{timestep}.img
 
-SuitabilityFiles  	ageclass_foresttype_example.txt
-			<<ageclass_tsf_example.txt
+SuitabilityFiles  	ageclass_tsf_example.txt
 			<<ageclass_tsh_example.txt
 			<<foresttype_tsf_example.txt
 			<<foresttype_tsh_example.txt
+			<<ageclass_foresttype_example.txt

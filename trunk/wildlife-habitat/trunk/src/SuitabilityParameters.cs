@@ -14,6 +14,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
     {
         private string wildlifeName;
         private string suitabilityType;
+        private string disturbanceType;
         private double[] coefficients;
         private List<IMapDefinition> forestTypes;
         private Dictionary<int,double> fireSeverities;
@@ -44,6 +45,19 @@ namespace Landis.Extension.Output.WildlifeHabitat
             set
             {
                 suitabilityType = value;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        public string DisturbanceType
+        {
+            get
+            {
+                return disturbanceType;
+            }
+            set
+            {
+                disturbanceType = value;
             }
         }
 
@@ -121,6 +135,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             fireSeverities = new Dictionary<int, double>();
             harvestPrescriptions = new Dictionary<string, double>();
             suitabilities = new Dictionary<string,Dictionary<int,double>>();
+            disturbanceType = "None";
         }
 
     }

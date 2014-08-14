@@ -78,6 +78,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         /// </param>
         public override void Run()
         {
+            // The index variable increments with each suitability file - an index of multiple wildlife input files
             int index = 0;
             foreach (string suitabilityFile in suitabilityFiles)
             {
@@ -86,6 +87,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
                 foreach (Site site in modelCore.Landscape.ActiveSites)
                 {
+                  double suitabilityValue = 0;
                   // calculate dominant age as site variable (DomAge), store for retreival
                   //  Note: DomAge site variable is an array of values giving dominant age for this year and last year
                   UpdateDominantAge(index, site);
@@ -100,7 +102,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                   {
                       //   get forest type (calculated above with UpdateForestType)
                       int currentForestType = SiteVars.ForestType[site][index][0];
-                      double suitabilityValue = 0;
+                      
                       if (currentForestType > 0)
                       {
                           IForestType forestType = mySuitabilityParameters.ForestTypes[0].ForestTypes[currentForestType - 1];
@@ -124,34 +126,86 @@ namespace Landis.Extension.Output.WildlifeHabitat
                       //  write sitevar for suitability value
                       SiteVars.SuitabilityValue[site][index] = suitabilityValue;
                   }
-                // if suitabilityType == AgeClass_TimeSinceDisturbance:
-                // if disturbanceType == "Fire" then:
-                //   Check this year fire severity
-                //   if > 0 then 
-                //      translate to suitability weight
-                //      if suitability weight > 0 then
-                //        store sitevar YearOfFire by wildlifeName
-                //        read previous year dominant age
-                //        store sitevar AgeAtFireYear by wildlifeName
-                //        store sitevar SuitabilityWeight by wildlifeName
-                //  read sitevar AgeAtFireYear for age value
-                //  read sitevar YearOfFire
-                //  calculate timeSinceDisturbance = currentYear - YearOfFire
-                // if disturbaceType == "Harvest" then:
-                //  Check this year harvest prescription names
-                //   if != null then 
-                //      translate to suitability weight
-                //      if suitability weight > 0 then
-                //        store sitevar YearOfHarvest by wildlifeName
-                //        read previous year dominant age
-                //        store sitevar AgeAtHarvestYear by wildlifeName
-                //        store sitevar SuitabilityWeight by wildlifeName
-                //  read sitevar AgeAtHarvestYear for age value
-                //  read sitevar YearOfHarvest
-                //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
-                //  look up suitabilty in suitabilityTable for combination of age and timeSinceDisturbance
-                // write sitevar for suitability value
-                // if output timestep then write to map
+                  // if suitabilityType == AgeClass_TimeSinceDisturbance:
+                  else if (mySuitabilityParameters.SuitabilityType == "AgeClass_TimeSinceDisturbance")
+                  {
+                      int ageAtDisturbanceYear = 0;
+                      int timeSinceDisturbance = 0;
+                      double suitabilityWeight = 0.0;
+                      // if disturbanceType == "Fire" then:
+                      if (mySuitabilityParameters.DisturbanceType == "Fire")
+                      {
+                          // Check if fire severity output exists
+                          if (SiteVars.FireSeverity == null)
+                          {
+                              string mesg = string.Format("The DisturbanceType is Fire, but FireSeverity SiteVariable is not defined.  Please double-check that a fire extension is running.");
+                              throw new System.ApplicationException(mesg);
+                          }
+                          else
+                          {
+                              //   Check this year fire severity
+                              int currentFireSeverity = (int)SiteVars.FireSeverity[site];
+                              //   if > 0 then update sites with new values
+                              if (currentFireSeverity > 0)
+                              {
+                                  //      translate to suitability weight
+                                  suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
+                                
+                                  //      if suitability weight > 0 then
+                                  if (suitabilityWeight > 0)
+                                  {
+                                      //        store sitevar YearOfFire by index
+                                      SiteVars.YearOfFire[site][index] = ModelCore.CurrentTime;
+                                      //        read previous year dominant age
+                                      int prevYearDomAge = SiteVars.DominantAge[site][index][1];
+                                      //        store sitevar AgeAtFireYear by index
+                                      SiteVars.AgeAtFireYear[site][index] = prevYearDomAge;
+                                  }
+                              }
+                              //  read sitevar AgeAtDisturbanceYear for age value
+                              ageAtDisturbanceYear = SiteVars.AgeAtFireYear[site][index];
+                              //  read sitevar YearOfFire
+                              int yearOfFire = SiteVars.YearOfFire[site][index];
+                              //  calculate timeSinceDisturbance = currentYear - YearOfFire
+                              timeSinceDisturbance = ModelCore.CurrentTime - yearOfFire;
+                          }
+                      }
+                      // if disturbaceType == "Harvest" then:
+                      // Check if harvest prescription output exists
+                      //  Check this year harvest prescription names
+                      //   if != null then 
+                      //      translate to suitability weight
+                      //      if suitability weight > 0 then
+                      //        store sitevar YearOfHarvest by wildlifeName
+                      //        read previous year dominant age
+                      //        store sitevar AgeAtHarvestYear by wildlifeName
+                      //        store sitevar SuitabilityWeight by wildlifeName
+                      //  read sitevar AgeAtDisturbanceYear for age value
+                      //  read sitevar YearOfHarvest
+                      //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
+
+                      //  look up suitabilty in suitabilityTable for combination of AgeAtDisturbanceYear and timeSinceDisturbance
+                      foreach( KeyValuePair<string, Dictionary<int, double>> suitabilityRow in mySuitabilityParameters.Suitabilities)
+                      {
+                          int maxTimeSinceDist = int.Parse(suitabilityRow.Key);
+                          if (timeSinceDisturbance <= maxTimeSinceDist)
+                          {
+                              foreach (KeyValuePair<int, double> item in suitabilityRow.Value)
+                              {
+                                  int ageLimit = item.Key;
+                                  if ( ageAtDisturbanceYear <= ageLimit)
+                                  {
+                                      suitabilityValue = (item.Value * suitabilityWeight);
+                                      break;
+                                  }
+                              }
+                              break;
+                          }
+                      }
+                      
+                      // write sitevar for suitability value
+                      SiteVars.SuitabilityValue[site][index] = suitabilityValue;
+                  }
 
                 // if suitabilityType == ForestType_TimeSinceDisturbance:
                 //   calculate forest type (CalcForestTypeBiomass or CalcForestTypeAge)
