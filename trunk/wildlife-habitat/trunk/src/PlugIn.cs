@@ -150,6 +150,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
                               {
                                   //      translate to suitability weight
                                   suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
+
+                                  SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
                                 
                                   //      if suitability weight > 0 then
                                   if (suitabilityWeight > 0)
@@ -195,7 +197,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                   int ageLimit = item.Key;
                                   if ( ageAtDisturbanceYear <= ageLimit)
                                   {
-                                      suitabilityValue = (item.Value * suitabilityWeight);
+                                      suitabilityValue = (item.Value * SiteVars.SuitabilityWeight[site][index]);
                                       break;
                                   }
                               }

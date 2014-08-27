@@ -22,6 +22,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Dictionary<int, int[]>> forestType;
         private static ISiteVar<Dictionary<int, double>> suitabilityValue;
         private static ISiteVar<Dictionary<int, int>> ageAtFireYear;
+        private static ISiteVar<Dictionary<int, double>> suitabilityWeight;
+
         
 
         //---------------------------------------------------------------------
@@ -39,6 +41,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
             suitabilityValue = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
+            suitabilityWeight = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
+
 
             if (biomassCohorts == null && ageCohorts == null)
             {
@@ -73,6 +77,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
                 suitValDict.Add(0, 0.0);
                 SiteVars.SuitabilityValue[site] = suitValDict;
+
+                Dictionary<int, double> suitWtDict = new Dictionary<int, double>();
+                suitWtDict.Add(0, 0.0);
+                SiteVars.SuitabilityWeight[site] = suitWtDict;
 
             }
         }
@@ -187,6 +195,20 @@ namespace Landis.Extension.Output.WildlifeHabitat
             set
             {
                 suitabilityValue = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        // Dictionary with key equal the index of the suitability file and 
+        // value equal to the suitability weight
+        public static ISiteVar<Dictionary<int, double>> SuitabilityWeight
+        {
+            get
+            {
+                return suitabilityWeight;
+            }
+            set
+            {
+                suitabilityWeight = value;
             }
         }
         //---------------------------------------------------------------------
