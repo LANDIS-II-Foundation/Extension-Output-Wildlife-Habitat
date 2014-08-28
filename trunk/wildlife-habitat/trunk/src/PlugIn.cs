@@ -184,7 +184,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                           else
                           {
                       //  Check this year harvest prescription names
-                          int currentprescriptionName = (int)SiteVars.prescriptionName[site];
+                          string currentprescriptionName = (int)SiteVars.prescriptionName[site];
                       //   if != null then 
                               if (currentprescriptionName != null)
                               {
@@ -236,8 +236,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 {
                 // if disturbanceType == "Fire" then:
                 if (mySuitabilityParameters.DisturbanceType == "Fire")
+                {
                 //   Check this year fire severity
-                currentFireSeverity = (int)SiteVars.FireSeverity[site];
+                int currentFireSeverity = SiteVars.FireSeverity[site];
                 //   if > 0 then 
                 if (currentFireSeverity > 0)
                 {
@@ -258,6 +259,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                               }
                 //        store sitevar SuitabilityWeight by index
                 SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
+                }
                 //  read sitevar ForestTypeFireYear for age value
                                   ageAtDisturbanceYear = SiteVars.AgeAtFireYear[site][index];
                 //  read sitevar YearOfFire
@@ -269,8 +271,16 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 // if disturbanceType == "Harvest" then:
                 if (mySuitabilityParameters.DisturbanceType == "Harvest")
                       {
+                // Check if harvest prescription output exists
+                          if (SiteVars.prescriptionName == null)
+                          {
+                              string mesg = string.Format("The DisturbanceType is Harvest, but prescriptionName SiteVariable is not defined.  Please double-check that a Harvest extension is running.");
+                              throw new System.ApplicationException(mesg);
+                          }
+                          else
+                          {
                 //  Check this year harvest prescription names
-                          int currentprescriptionName = (int)SiteVars.prescriptionName[site];
+                          string currentprescriptionName = (int)SiteVars.prescriptionName[site];
                 //   if != null then 
                           if (currentprescriptionName != null)
                               {
