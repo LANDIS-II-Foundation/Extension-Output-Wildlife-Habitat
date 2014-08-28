@@ -22,6 +22,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Dictionary<int, int[]>> forestType;
         private static ISiteVar<Dictionary<int, double>> suitabilityValue;
         private static ISiteVar<Dictionary<int, int>> ageAtFireYear;
+        private static ISiteVar<Dictionary<int, int>> ageAtHarvestYear;
         private static ISiteVar<Dictionary<int, double>> suitabilityWeight;
 
         
@@ -38,6 +39,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             yearOfFire = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int>>();
             ageAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             yearOfHarvest = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
+            ageAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
             suitabilityValue = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
@@ -63,6 +65,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 Dictionary<int, int> yohDict = new Dictionary<int, int>();
                 yohDict.Add(0, 0);
                 SiteVars.YearOfHarvest[site] = yohDict;
+
+                Dictionary<int, int> ageHarvestDict = new Dictionary<int, int>();
+                ageHarvestDict.Add(0, 0);
+                SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
 
                 Dictionary<int, int[]> domAgeDict = new Dictionary<int, int[]>();
                 int[] domAgeArray = new int[2];
@@ -151,6 +157,18 @@ namespace Landis.Extension.Output.WildlifeHabitat
             set
             {
                 yearOfHarvest = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public static ISiteVar<Dictionary<int, int>> AgeAtHarvestYear
+        {
+            get
+            {
+                return ageAtHarvestYear;
+            }
+            set
+            {
+                ageAtHarvestYear = value;
             }
         }
         //---------------------------------------------------------------------
