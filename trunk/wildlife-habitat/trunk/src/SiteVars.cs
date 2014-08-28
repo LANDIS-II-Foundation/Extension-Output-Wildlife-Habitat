@@ -42,6 +42,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             ageAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
+            forestTypeAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
+            forestTypeAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
             suitabilityValue = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
             suitabilityWeight = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
 
@@ -79,6 +81,14 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 int[] forTypeArray = new int[2];
                 forTypeDict.Add(0, forTypeArray);
                 SiteVars.ForestType[site] = forTypeDict;
+
+                Dictionary<int, int> forestTypeFireDict = new Dictionary<int, int>();
+                forestTypeFireDict.Add(0, 0);
+                SiteVars.forestTypeAtFireYear[site] = forestTypeFireDict;
+
+                Dictionary<int, int> forestTypeHarvestDict = new Dictionary<int, int>();
+                ForestTypeharvestDict.Add(0, 0);
+                SiteVars.forestTypeAtharvestYear[site] = ForestTypeHarvestDict;
 
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
                 suitValDict.Add(0, 0.0);
@@ -199,6 +209,30 @@ namespace Landis.Extension.Output.WildlifeHabitat
             set
             {
                 forestType = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public static ISiteVar<Dictionary<int, int>> forestTypeAtFireYear
+        {
+            get
+            {
+                return forestTypeAtFireYear;
+            }
+            set
+            {
+                forestTypeAtFireYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public static ISiteVar<Dictionary<int, int>> forestTypeAtHarvestYear
+        {
+            get
+            {
+                return forestTypeAtHarvestYear;
+            }
+            set
+            {
+                forestTypeAtHarvestYear = value;
             }
         }
         //---------------------------------------------------------------------

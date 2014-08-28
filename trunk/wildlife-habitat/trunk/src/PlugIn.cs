@@ -234,13 +234,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 // if suitabilityType == ForestType_TimeSinceDisturbance:
                 else if (mySuitabilityParameters.SuitabilityType == "ForestType_TimeSinceDisturbance")
                 {
-                //   calculate forest type (CalcForestTypeBiomass or CalcForestTypeAge)
-                int currentForestType = SiteVars.ForestType[site][index][0];
-                {
                 // if disturbanceType == "Fire" then:
                 if (mySuitabilityParameters.DisturbanceType == "Fire")
                 //   Check this year fire severity
-                int currentFireSeverity = (int)SiteVars.FireSeverity[site];
+                currentFireSeverity = (int)SiteVars.FireSeverity[site];
                 //   if > 0 then 
                 if (currentFireSeverity > 0)
                 {
@@ -255,13 +252,13 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                 SiteVars.YearOfFire[site][index] = ModelCore.CurrentTime;
                 //        read previous year forest type
                                 int prevYearForType = SiteVars.forestType[site][index][1];
-                //        store sitevar AgeAtFireYear by index
-                                SiteVars.AgeAtFireYear[site][index] = prevYearDomAge;
+                //        store sitevar forestTypeAtFireYear by index
+                                SiteVars.forestTypeAtFireYear[site][index] = prevYearForType;
                                   }
                               }
                 //        store sitevar SuitabilityWeight by index
                 SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
-                //  read sitevar AgeAtFireYear for age value
+                //  read sitevar ForestTypeFireYear for age value
                                   ageAtDisturbanceYear = SiteVars.AgeAtFireYear[site][index];
                 //  read sitevar YearOfFire
                 int yearOfFire = SiteVars.YearOfFire[site][index];
@@ -286,8 +283,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                               SiteVars.yearOfHarvest[site][index] = ModelCore.CurrentTime;
                 //        read previous year forest type
                                               int prevYearForType = SiteVars.forestType[site][index][1];
-                //        store sitevar AgeAtHarvestYear by index
-                                              SiteVars.AgeAtHarvestYear[site][index] = SiteVars.DominantAge[site][index][1];
+                //        store sitevar forestTypeAtHarvestYear by index
+                                              SiteVars.forestTypeAtHarvestYear[site][index] = prevYearForType;
+                                         }
+                          }
                 //        store sitevar SuitabilityWeight by index
                                               SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
                 //  read sitevar AgeAtHarvestYear for age value
@@ -299,17 +298,17 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 // look up suitability in suitabilityTable for combination of forest type and timeSinceDisturbance
                 foreach( KeyValuePair<string, Dictionary<int, double>> suitabilityRow in mySuitabilityParameters.Suitabilities)
                       {
+                        int forestTypeAtDisturbanceYear = int.Parse(suitabilityRow.Key);
+                         {
                           int maxTimeSinceDist = int.Parse(suitabilityRow.Key);
-                          if (timeSinceDisturbance <= maxTimeSinceDist)
                           {
                               foreach (KeyValuePair<int, double> item in suitabilityRow.Value)
-                              {
-                                  int currentForestType = item.Key;
                                   {
                                       suitabilityValue = (item.Value * SiteVars.SuitabilityWeight[site][index]);
                                       break;
                                   }
                               }
+                         }
                               break;
                           }
                       }
@@ -367,6 +366,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
 
         }
+     }
+   }
         //---------------------------------------------------------------------
         // Copied from biomass-reclass
         // Added reclass coefficients
