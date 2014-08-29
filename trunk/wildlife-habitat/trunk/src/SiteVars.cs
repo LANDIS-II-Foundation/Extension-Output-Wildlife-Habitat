@@ -24,6 +24,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Dictionary<int, int>> ageAtFireYear;
         private static ISiteVar<Dictionary<int, int>> ageAtHarvestYear;
         private static ISiteVar<Dictionary<int, double>> suitabilityWeight;
+        private static ISiteVar<Dictionary<int, int>> forestTypeAtFireYear;
+        private static ISiteVar<Dictionary<int, int>> forestTypeAtHarvestYear;
+
 
         
 
@@ -42,8 +45,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             ageAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
-            forestTypeAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
-            forestTypeAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
+            forestTypeAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
+            forestTypeAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             suitabilityValue = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
             suitabilityWeight = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
 
@@ -84,11 +87,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
                 Dictionary<int, int> forestTypeFireDict = new Dictionary<int, int>();
                 forestTypeFireDict.Add(0, 0);
-                SiteVars.forestTypeAtFireYear[site] = forestTypeFireDict;
+                SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
 
                 Dictionary<int, int> forestTypeHarvestDict = new Dictionary<int, int>();
-                ForestTypeharvestDict.Add(0, 0);
-                SiteVars.forestTypeAtharvestYear[site] = ForestTypeHarvestDict;
+                forestTypeHarvestDict.Add(0, 0);
+                SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
 
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
                 suitValDict.Add(0, 0.0);
@@ -212,7 +215,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
-        public static ISiteVar<Dictionary<int, int>> forestTypeAtFireYear
+        public static ISiteVar<Dictionary<int, int>> ForestTypeAtFireYear
         {
             get
             {
@@ -224,7 +227,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
-        public static ISiteVar<Dictionary<int, int>> forestTypeAtHarvestYear
+        public static ISiteVar<Dictionary<int, int>> ForestTypeAtHarvestYear
         {
             get
             {
