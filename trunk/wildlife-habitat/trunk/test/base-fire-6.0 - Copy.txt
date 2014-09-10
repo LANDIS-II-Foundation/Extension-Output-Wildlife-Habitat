@@ -8,7 +8,7 @@ Timestep  5
     eco1       1	 100    4     400    0.001    100
     eco2       2	 200    6     600    0.001     50
 
-InitialFireRegionsMap	simple1.img
+InitialFireRegionsMap	ecoregions.gis
 
 DynamicFireRegionTable  << Optional parameter
 
@@ -46,5 +46,5 @@ FireDamageTable
 
 
 MapNames  fire/severity-{timestep}.img
-LogFile   fire/fire-log.csv
+LogFile   fire-log.csv
 SummaryLogFile fire/summary-log.csv

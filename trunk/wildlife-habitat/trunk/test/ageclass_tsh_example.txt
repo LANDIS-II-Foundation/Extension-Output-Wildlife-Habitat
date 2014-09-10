@@ -7,9 +7,9 @@ SuitabilityType  AgeClass_TimeSinceDisturbance	<< 'AgeClass_ForestType'
 
 DisturbanceTable	Harvest
 <<Severity Class	SuitabilityWeight
-	RandomClearCut		0
+	AspenClearCut		0
 	MaxAgeClearCut		0.5
-	SelectionCut		1
+	SelectiveNorthernHardwood	1
 
 
 SuitabilityTable

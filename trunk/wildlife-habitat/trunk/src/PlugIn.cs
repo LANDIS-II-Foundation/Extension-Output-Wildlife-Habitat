@@ -330,7 +330,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     }
                 }
                 // if output timestep then write all maps
-                if (ModelCore.CurrentTime == parameters.OutputTimestep)
+                if ((ModelCore.CurrentTime % parameters.OutputTimestep) == 0)
                 {
                     string mapName = mySuitabilityParameters.WildlifeName;
                     string path = MapFileNames.ReplaceTemplateVars(mapNameTemplate, mapName, modelCore.CurrentTime);

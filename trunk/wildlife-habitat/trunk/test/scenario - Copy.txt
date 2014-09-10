@@ -5,7 +5,7 @@ Duration  50
 Species   species.txt
 
 Ecoregions      ./ecoregions.txt
-EcoregionsMap   ./simple1.img
+EcoregionsMap   ./ecoregions.gis
 
 CellLength  100 << meters, 100 x 100 m = 1 ha
 
