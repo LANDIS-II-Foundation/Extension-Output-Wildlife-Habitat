@@ -29,10 +29,8 @@ Prescription SelectiveNorthernHardwood
     StandRanking    Economic
     >> Species EconomicRank Minimum Age
     >> ------- ------------ -----------
-    acerrubr   60 	     	45
-    acersacc   100          50
-    betualle   100	     	50
-    fraxamer   60	     	40
+    pinubank   100 	    20
+    acersacc   100          20
 
     SiteSelection PatchCutting 10%  1  << ha
     CohortsRemoved SpeciesList
