@@ -13,7 +13,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
         private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> ageCohorts;
 
-        private static ISiteVar<string> prescriptionName;
+        private static ISiteVar<string> PrescriptionName;
         private static ISiteVar<byte> fireSeverity;
 
         private static ISiteVar<Dictionary<int, int>> yearOfFire;

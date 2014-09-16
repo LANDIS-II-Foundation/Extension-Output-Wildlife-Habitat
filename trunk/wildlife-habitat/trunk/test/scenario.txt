@@ -21,7 +21,8 @@ CellLength  100 << meters, 100 x 100 m = 1 ha
 
 >> Disturbance Extensions   Initialization File
 >> ----------------------   -------------------
-  "Base Fire"			"base-fire-6.0.txt"
+  "Base Fire"		    "base-fire-6.0.txt"
+  "Base Harvest"	    "BaseHarvest-v1.2-Sample-Input.txt"
 
 >>   DisturbancesRandomOrder  yes  << optional parameter; default = no
 
@@ -29,6 +30,7 @@ CellLength  100 << meters, 100 x 100 m = 1 ha
 >> Other Extensions         Initialization File
 >> ----------------         -------------------
    "Wildlife Habitat Output"  DJBwildlife_habitat_input.txt
+   "Output Biomass Reclass"   DJBoutput-biomass-reclass.txt 
 
 
 >>RandomNumberSeed  4,357  << optional parameter; default = the seed is
