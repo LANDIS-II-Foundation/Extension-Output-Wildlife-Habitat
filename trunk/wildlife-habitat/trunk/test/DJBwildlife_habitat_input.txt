@@ -1,0 +1,10 @@
+LandisData  "Wildlife Habitat Output"
+
+Timestep  1
+
+OutputTimestep  10
+
+MapFileNames	output/habitat/{wildlifeName}-{timestep}.img
+
+SuitabilityFiles  	DJBforesttype_tsf_exampleFType.txt
+			

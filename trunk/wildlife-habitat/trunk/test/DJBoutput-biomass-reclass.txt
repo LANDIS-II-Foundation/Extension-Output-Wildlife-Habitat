@@ -1,0 +1,17 @@
+LandisData  "Output Biomass Reclass"
+
+Timestep   10
+
+
+ReclassMaps
+
+>> Map Name    Forest Type    Species
+>> --------    -------------  -------
+   Pine ->     NorthernPines  pinubank
+              
+
+   Maple ->    MapleHardwood  acersacc
+               
+
+
+MapFileNames   output/biomass-reclass/bio-{reclass-map-name}-{timestep}.img
