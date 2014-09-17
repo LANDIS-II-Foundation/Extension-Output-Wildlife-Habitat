@@ -1,0 +1,15 @@
+LandisData  "Output Biomass Reclass"
+
+Timestep   10
+
+
+ReclassMaps
+
+>> Map Name    Forest Type    Species
+>> --------    -------------  -------
+   ForestType ->  Pine		pinubank pinuresi pinustro
+		  MapleHardwood	acersacc betualle abiebals acerrubr fraxamer -pinubank
+		  SpruceFir	piceglau  abiebals
+		  Other		poputrem betupapy
+
+MapFileNames   output/biomass-reclass/bio-{reclass-map-name}-{timestep}.img
