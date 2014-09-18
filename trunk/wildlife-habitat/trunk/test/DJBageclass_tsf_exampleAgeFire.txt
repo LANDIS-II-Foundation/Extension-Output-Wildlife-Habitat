@@ -8,11 +8,11 @@ SuitabilityType  AgeClass_TimeSinceDisturbance	<< 'AgeClass_ForestType'
 DisturbanceTable	Fire
 << Severity Class	SuitabilityWeight
 	0			0
-	1			2
-	2			2
-	3			2
-	4			2
-	5			2
+	1			1
+	2			1
+	3			1
+	4			1
+	5			1
 
 
 SuitabilityTable
@@ -23,5 +23,5 @@ SuitabilityTable
 <<			-------------------
   5			0	1	0
   10			0	1	0
-  9999			0	1	0
+  9999			0	0	0
 

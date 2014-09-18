@@ -6,5 +6,5 @@ OutputTimestep  10
 
 MapFileNames	output/habitat/{wildlifeName}-{timestep}.img
 
-SuitabilityFiles  	DJBageclass_tsh_exampleHarvest.txt
+SuitabilityFiles  	DJBageclass_tsh_exampleAge.txt
 			

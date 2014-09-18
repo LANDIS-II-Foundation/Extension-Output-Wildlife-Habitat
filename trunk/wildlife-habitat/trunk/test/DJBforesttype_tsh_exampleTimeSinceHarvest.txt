@@ -30,7 +30,7 @@ ForestTypeTable
 DisturbanceTable	Harvest
 <<Severity Class	SuitabilityWeight
 	AspenClearcut		1
-	MaxAgeClearCut		1
+	MaxAgeClearcut		1
 	SelectiveNorthernHardwood	1
 
 
