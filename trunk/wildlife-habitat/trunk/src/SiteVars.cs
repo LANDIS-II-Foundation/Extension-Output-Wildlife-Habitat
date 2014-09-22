@@ -13,7 +13,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
         private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> ageCohorts;
 
-        private static ISiteVar<string> PrescriptionName;
+        private static ISiteVar<string> prescriptionName;
         private static ISiteVar<byte> fireSeverity;
 
         private static ISiteVar<Dictionary<int, int>> yearOfFire;
@@ -26,6 +26,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Dictionary<int, double>> suitabilityWeight;
         private static ISiteVar<Dictionary<int, int>> forestTypeAtFireYear;
         private static ISiteVar<Dictionary<int, int>> forestTypeAtHarvestYear;
+        private static ISiteVar<int> timeOfLastHarvest;
 
 
         
@@ -37,6 +38,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             biomassCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>("Succession.BiomassCohorts");
             ageCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>("Succession.AgeCohorts");
             prescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
+            timeOfLastHarvest = PlugIn.ModelCore.GetSiteVar<int>("Harvest.TimeOfLastEvent");
             fireSeverity = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
 
             yearOfFire = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int>>();
@@ -126,6 +128,14 @@ namespace Landis.Extension.Output.WildlifeHabitat
             get
             {
                 return prescriptionName;
+            }
+        }
+        //---------------------------------------------------------------------
+        public static ISiteVar<int> TimeOfLastHarvest
+        {
+            get
+            {
+                return timeOfLastHarvest;
             }
         }
         //---------------------------------------------------------------------

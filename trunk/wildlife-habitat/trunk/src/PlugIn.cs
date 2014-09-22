@@ -185,8 +185,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                             {
                                 //  Check this year harvest prescription names
                                 string currentprescriptionName = SiteVars.PrescriptionName[site];
+                                int timeofLastHarvest =SiteVars.TimeOfLastHarvest[site];
                                 //   if != null then 
-                                if (currentprescriptionName != null)
+                                if (currentprescriptionName != null && timeofLastHarvest == ModelCore.CurrentTime)
                                 {
                                     //      translate to suitability weight
                                     suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
@@ -198,7 +199,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                         //        read previous year dominant age
                                         int prevYearDomAge = SiteVars.DominantAge[site][index][1];
                                         //        store sitevar AgeAtHarvestYear by index
-                                        SiteVars.AgeAtHarvestYear[site][index] = SiteVars.DominantAge[site][index][1];
+                                        SiteVars.AgeAtHarvestYear[site][index] = prevYearDomAge;
                                         //        store sitevar SuitabilityWeight by index
                                         SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
                                     }
