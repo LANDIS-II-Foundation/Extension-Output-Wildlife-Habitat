@@ -42,7 +42,7 @@ SuitabilityTable
 		5	10	9999
 <<		Suitability Values
 <<		-----------------------
-Pine		1	1	0
-MapleHardwood	1	1	0
-SpruceFir	0	0	0
-Other		0	0	0
+Pine		1	1	1
+MapleHardwood	1	1	1
+SpruceFir	1	1	1
+Other		1	1	1
