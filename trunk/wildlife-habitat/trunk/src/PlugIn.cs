@@ -145,8 +145,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                             {
                                 //   Check this year fire severity
                                 int currentFireSeverity = (int)SiteVars.FireSeverity[site];
+                                int timeofLastFire = SiteVars.TimeOfLastFire[site];
                                 //   if > 0 then update sites with new values
-                                if (currentFireSeverity > 0)
+                                if (currentFireSeverity > 0 && timeofLastFire == ModelCore.CurrentTime)
                                 {
                                     //      translate to suitability weight
                                     suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
@@ -247,8 +248,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                         {
                             //   Check this year fire severity
                             int currentFireSeverity = SiteVars.FireSeverity[site];
+                            int timeofLastFire = SiteVars.TimeOfLastFire[site];
                             //   if > 0 then 
-                            if (currentFireSeverity > 0)
+                            if (currentFireSeverity > 0 && timeofLastFire == ModelCore.CurrentTime)
                             {
                                 //      translate to suitability weight
                                 suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
@@ -286,8 +288,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                             {
                                 //  Check this year harvest prescription names
                                 string currentprescriptionName = SiteVars.PrescriptionName[site];
+                                int timeofLastHarvest = SiteVars.TimeOfLastHarvest[site];
                                 //   if != null then 
-                                if (currentprescriptionName != null)
+                                if (currentprescriptionName != null && timeofLastHarvest == ModelCore.CurrentTime)
                                 {
                                     //      translate to suitability weight
                                     suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
@@ -310,22 +313,29 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                 int yearOfHarvest = SiteVars.YearOfHarvest[site][index];
                                 //  calculate timeSinceDisturbance = currentYear - YearOfHarvest
                                 timeSinceDisturbance = ModelCore.CurrentTime - yearOfHarvest;
-
-                                // look up suitability in suitabilityTable for combination of forest type and timeSinceDisturbance
-                                foreach (KeyValuePair<string, Dictionary<int, double>> suitabilityRow in mySuitabilityParameters.Suitabilities)
-                                {
-                                    forestTypeAtDisturbanceYear = int.Parse(suitabilityRow.Key);
-                                    int maxTimeSinceDist = int.Parse(suitabilityRow.Key);
-                                    foreach (KeyValuePair<int, double> item in suitabilityRow.Value)
-                                    {
-                                        suitabilityValue = (item.Value * SiteVars.SuitabilityWeight[site][index]);
-                                        break;
-                                    }
-
-                                    break;
-                                }
                             }
                         }
+                        if (forestTypeAtDisturbanceYear > 0)
+                        {
+                            IForestType forestType = mySuitabilityParameters.ForestTypes[0].ForestTypes[forestTypeAtDisturbanceYear - 1];
+
+                            // look up suitability in suitabilityTable for combination of forest type and timeSinceDisturbance
+                            Dictionary<int, double> suitabilityRow = mySuitabilityParameters.Suitabilities[forestType.Name];
+
+                            foreach (KeyValuePair<int, double> item in suitabilityRow)
+                            {
+                                int maxTimeSinceDist = item.Key;
+                                if (timeSinceDisturbance <= maxTimeSinceDist)
+                                {
+                                    suitabilityValue = (item.Value * SiteVars.SuitabilityWeight[site][index]);
+                                    break;
+                                }
+
+                            }
+                        }
+                        else
+                            suitabilityValue = 0;
+
                         // write sitevar for suitability value
                         SiteVars.SuitabilityValue[site][index] = suitabilityValue;
                     }

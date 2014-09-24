@@ -27,6 +27,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private static ISiteVar<Dictionary<int, int>> forestTypeAtFireYear;
         private static ISiteVar<Dictionary<int, int>> forestTypeAtHarvestYear;
         private static ISiteVar<int> timeOfLastHarvest;
+        private static ISiteVar<int> timeOfLastFire;
+
 
 
         
@@ -40,6 +42,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             prescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
             timeOfLastHarvest = PlugIn.ModelCore.GetSiteVar<int>("Harvest.TimeOfLastEvent");
             fireSeverity = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
+            timeOfLastFire = PlugIn.ModelCore.GetSiteVar<int>("Fire.TimeOfLastEvent");
 
             yearOfFire = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int>>();
             ageAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
@@ -146,6 +149,15 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 return fireSeverity;
             }
         }
+        //---------------------------------------------------------------------
+        public static ISiteVar<int> TimeOfLastFire
+        {
+            get
+            {
+                return timeOfLastFire;
+            }
+        }
+
         //---------------------------------------------------------------------
         public static ISiteVar<Dictionary<int, int>> YearOfFire
         {
