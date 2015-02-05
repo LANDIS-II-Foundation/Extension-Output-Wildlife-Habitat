@@ -24,7 +24,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
             get
             {
-                return "HabitatSuitabilityFile";
+                return "HabitatSuitabilityTable";
             }
         }
         //---------------------------------------------------------------------
@@ -33,8 +33,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
-            if (landisData.Value.Actual != "HabitatSuitabilityFile")
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "HabitatSuitabilityFile");
+            if (landisData.Value.Actual != "HabitatSuitabilityTable")
+                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "HabitatSuitabilityTable");
 
             SuitabilityParameters suitabilityParameters = new SuitabilityParameters(PlugIn.ModelCore.Species.Count);
 
@@ -44,8 +44,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
             InputVar<string> suitabilityType = new InputVar<string>("SuitabilityType");
             ReadVar(suitabilityType);
-            if ((suitabilityType.Value.Actual != "AgeClass_ForestType") & (suitabilityType.Value.Actual != "AgeClass_TimeSinceDisturbance") & (suitabilityType.Value.Actual != "ForestType_TimeSinceDisturbance"))
-                throw new InputValueException(suitabilityType.Value.String, "The value is not \"{0}\"", "AgeClass_ForestType or AgeClass_TimeSinceDisturbance or ForestType_TimeSinceDisturbance");
+            if ((suitabilityType.Value.Actual != "AgeClass_ForestType") & (suitabilityType.Value.Actual != "AgeClass_TimeSinceFire") & (suitabilityType.Value.Actual != "ForestType_TimeSinceFire"))
+                throw new InputValueException(suitabilityType.Value.String, "The value is not \"{0}\"", "AgeClass_ForestType or AgeClass_TimeSinceFire or ForestType_TimeSinceFire");
             suitabilityParameters.SuitabilityType = suitabilityType.Value;
 
             List<string> keywordList = new List<string>();
@@ -55,16 +55,16 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 keywordList.Add("ForestTypeTable");
                 keywordList.Add("SuitabilityTable");
             }
-            else if (suitabilityType.Value == "AgeClass_TimeSinceDisturbance")
+            else if (suitabilityType.Value == "AgeClass_TimeSinceFire")
             {
-                keywordList.Add("DisturbanceTable");
+                keywordList.Add("FireSeverityTable");
                 keywordList.Add("SuitabilityTable");
             }
-            else if (suitabilityType.Value == "ForestType_TimeSinceDisturbance")
+            else if (suitabilityType.Value == "ForestType_TimeSinceFire")
             {
                 keywordList.Add("ReclassCoefficients");
                 keywordList.Add("ForestTypeTable");
-                keywordList.Add("DisturbanceTable");
+                keywordList.Add("FireSeverityTable");
                 keywordList.Add("SuitabilityTable");
             }
 
@@ -81,8 +81,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
                     Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
 
-                    bool continueLoop = true;
-                    while (continueLoop)
+
+                    while (!AtEndOfInput && CurrentName != keywordList[keywordIndex + 1])
                     {
                         StringReader currentLine = new StringReader(CurrentLine);
 
@@ -96,10 +96,6 @@ namespace Landis.Extension.Output.WildlifeHabitat
                         CheckNoDataAfter(string.Format("the {0} column", reclassCoeff.Name),
                                          currentLine);
                         GetNextLine();
-                        if (keywordIndex + 1 == keywordList.Count)
-                            continueLoop = !AtEndOfInput;
-                        else
-                            continueLoop = (CurrentName != keywordList[keywordIndex + 1]);
                     }
                 }
                 if (keyword == "ForestTypeTable")
@@ -115,8 +111,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     mapDefn.Name = "ForestTypes";
                     suitabilityParameters.ForestTypes.Add(mapDefn);
 
-                    bool continueLoop = true;
-                    while (continueLoop)
+                    while (!AtEndOfInput && CurrentName != keywordList[keywordIndex + 1])
                     {
                         StringReader currentLine = new StringReader(CurrentLine);
 
@@ -158,71 +153,27 @@ namespace Landis.Extension.Output.WildlifeHabitat
                             throw NewParseException("At least one species is required.");
 
                         GetNextLine();
-                        if (keywordIndex + 1 == keywordList.Count)
-                            continueLoop = !AtEndOfInput;
-                        else
-                            continueLoop = (CurrentName != keywordList[keywordIndex + 1]);
                     }
                 }
-                if (keyword == "DisturbanceTable")
+                if (keyword == "FireSeverityTable")
                 {
-                    // Table of Disturbance classes                   
-                    InputVar<string> disturbanceType = new InputVar<string>("DisturbanceTable");
-                    ReadVar(disturbanceType);
+                    // Table of Fire Severities
+                    ReadName("FireSeverityTable");
 
+                    InputVar<int> severityClass = new InputVar<int>("Fire Severity Class");
+                    InputVar<double> fireSuitability = new InputVar<double>("Fire Class Suitability");
                     Dictionary<int, double> fireSeverityTable = new Dictionary<int, double>();
-                    Dictionary<string, double> prescriptionTable = new Dictionary<string, double>();
-
-                    if (disturbanceType.Value == "Fire")
+                    while (!AtEndOfInput && CurrentName != keywordList[keywordIndex + 1])
                     {
-                        InputVar<int> severityClass = new InputVar<int>("Fire Severity Class");
-                        InputVar<double> fireSuitability = new InputVar<double>("Fire Class Suitability");
-                        suitabilityParameters.DisturbanceType = "Fire";
+                        StringReader currentLine = new StringReader(CurrentLine);
+                        TextReader.SkipWhitespace(currentLine);
+                        ReadValue(severityClass, currentLine);
+                        ReadValue(fireSuitability, currentLine);
 
-                        bool continueLoop = true;
-                        while (continueLoop)
-                        {
-                            StringReader currentLine = new StringReader(CurrentLine);
-                            TextReader.SkipWhitespace(currentLine);
-                            ReadValue(severityClass, currentLine);
-                            ReadValue(fireSuitability, currentLine);
-
-                            fireSeverityTable.Add(severityClass.Value, fireSuitability.Value);
-                            GetNextLine();
-                            if(keywordIndex+ 1 == keywordList.Count)
-                                continueLoop = !AtEndOfInput;
-                            else
-                                continueLoop = (CurrentName != keywordList[keywordIndex + 1]);
-                        }
+                        fireSeverityTable.Add(severityClass.Value, fireSuitability.Value);
                     }
-                    else if (disturbanceType.Value == "Harvest")
-                    {
-                        InputVar<string> prescriptionName = new InputVar<string>("Prescription Name");
-                        InputVar<double> prescriptionSuitability = new InputVar<double>("Prescription Suitability");
-                        suitabilityParameters.DisturbanceType = "Harvest";
-
-                        bool continueLoop = true;
-                        while (continueLoop)
-                        {
-                            StringReader currentLine = new StringReader(CurrentLine);
-                            TextReader.SkipWhitespace(currentLine);
-                            ReadValue(prescriptionName, currentLine);
-                            ReadValue(prescriptionSuitability, currentLine);
-
-                            prescriptionTable.Add(prescriptionName.Value, prescriptionSuitability.Value);
-                            GetNextLine();
-                            if (keywordIndex + 1 == keywordList.Count)
-                                continueLoop = !AtEndOfInput;
-                            else
-                                continueLoop = (CurrentName != keywordList[keywordIndex + 1]);
-                        }
-                    }
-                    else
-                    {
-                        throw new InputValueException(disturbanceType.Value.String, "The value is not \"{0}\"", "Fire or Harvest");
-                    }
+                    
                     suitabilityParameters.FireSeverities = fireSeverityTable;
-                    suitabilityParameters.HarvestPrescriptions = prescriptionTable;
                 }
                 if (keyword == "SuitabilityTable")
                 {
@@ -243,12 +194,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                         ageList.Add(ageCutoff.Value);
                     }
                     GetNextLine();
-
-                    bool continueLoop = true;
-                    while (continueLoop)
+                    while (!AtEndOfInput && CurrentName != keywordList[keywordIndex + 1])
                     {
-                        currentLine = new StringReader(CurrentLine);
-                        //TextReader.SkipWhitespace(currentLine);
+                        TextReader.SkipWhitespace(currentLine);
                         ReadValue(suitabilityClass, currentLine);
                         Dictionary<int, double> suitabilityRow = new Dictionary<int, double>();
                         foreach (int age in ageList)
@@ -257,11 +205,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                             suitabilityRow.Add(age, suitabilityValue.Value);
                         }
                         suitabilityTable.Add(suitabilityClass.Value, suitabilityRow);
-                        GetNextLine();
-                        if (keywordIndex + 1 == keywordList.Count)
-                            continueLoop = !AtEndOfInput;
-                        else
-                            continueLoop = (CurrentName != keywordList[keywordIndex + 1]);
+                        
                     }
                     suitabilityParameters.Suitabilities = suitabilityTable;
                 }

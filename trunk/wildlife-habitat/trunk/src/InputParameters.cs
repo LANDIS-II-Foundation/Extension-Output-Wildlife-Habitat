@@ -16,7 +16,6 @@ namespace Landis.Extension.Output.WildlifeHabitat
         private int outputTimestep;
         private string mapFileNames;
         private List<string> suitabilityFiles;
-        private List<ISuitabilityParameters> suitabilityParameters;
       
         //---------------------------------------------------------------------
 
@@ -87,22 +86,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         }
 
         //---------------------------------------------------------------------
-        /// <summary>
-        /// Suitability input files
-        /// </summary>
-        public List<ISuitabilityParameters> SuitabilityParameters
-        {
-            get
-            {
-                return suitabilityParameters;
-            }
-            set
-            {
-                suitabilityParameters = value;
-            }
-        }
 
-        //---------------------------------------------------------------------
 
         public InputParameters(int speciesCount)
         {

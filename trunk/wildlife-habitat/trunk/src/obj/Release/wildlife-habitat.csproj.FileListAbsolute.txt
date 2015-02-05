@@ -1,10 +1,6 @@
 C:\BRM\LANDIS_II\code\wildlife-habitat\trunk\src\obj\Release\ResolveAssemblyReference.cache
-C:\BRM\LANDIS_II\Code\landis-extensions\trunk\wildlife-habitat\trunk\src\obj\Release\ResolveAssemblyReference.cache
 c:\program files\landis-ii\6.0\bin\Landis.Extension.Output.WildlifeHabitat.dll
 c:\program files\landis-ii\6.0\bin\Landis.Extension.Output.WildlifeHabitat.pdb
 C:\BRM\LANDIS_II\Code\landis-extensions\trunk\wildlife-habitat\trunk\src\obj\Release\Landis.Extension.Output.WildlifeHabitat.dll
 C:\BRM\LANDIS_II\Code\landis-extensions\trunk\wildlife-habitat\trunk\src\obj\Release\Landis.Extension.Output.WildlifeHabitat.pdb
-C:\BRM\LANDIS_II\code\wildlife-habitat\trunk\src\obj\Release\Landis.Extension.Output.WildlifeHabitat.dll
-C:\BRM\LANDIS_II\code\wildlife-habitat\trunk\src\obj\Release\Landis.Extension.Output.WildlifeHabitat.pdb
-C:\bin\Debug\Landis.Extension.Output.WildlifeHabitat.dll
-C:\bin\Debug\Landis.Extension.Output.WildlifeHabitat.pdb
+C:\BRM\LANDIS_II\Code\landis-extensions\trunk\wildlife-habitat\trunk\src\obj\Release\wildlife-habitat.csprojResolveAssemblyReference.cache

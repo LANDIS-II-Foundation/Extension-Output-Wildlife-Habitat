@@ -38,7 +38,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
     {
         private string name;
         private List<IForestType> forestTypes;
+
         //---------------------------------------------------------------------
+
         /// <summary>
         /// Map name
         /// </summary>
@@ -51,7 +53,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 name = value;
             }
         }
+
         //---------------------------------------------------------------------
+
         /// <summary>
         /// Forest types
         /// </summary>
@@ -61,7 +65,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 return forestTypes;
             }
         }
+
         //---------------------------------------------------------------------
+
         /// <summary>
         /// Initialize a new instance.
         /// </summary>

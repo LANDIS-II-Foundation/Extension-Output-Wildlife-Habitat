@@ -14,11 +14,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
     {
         private string wildlifeName;
         private string suitabilityType;
-        private string disturbanceType;
         private double[] coefficients;
         private List<IMapDefinition> forestTypes;
         private Dictionary<int,double> fireSeverities;
-        private Dictionary<string, double> harvestPrescriptions;
         private Dictionary<string,Dictionary<int,double>> suitabilities;
       
         //---------------------------------------------------------------------
@@ -49,19 +47,6 @@ namespace Landis.Extension.Output.WildlifeHabitat
         }
 
         //---------------------------------------------------------------------
-        public string DisturbanceType
-        {
-            get
-            {
-                return disturbanceType;
-            }
-            set
-            {
-                disturbanceType = value;
-            }
-        }
-
-        //---------------------------------------------------------------------
         /// <summary>
 		/// Reclass coefficients for species
 		/// </summary>
@@ -77,7 +62,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 		/// <summary>
 		/// Reclass maps
 		/// </summary>
-        public List<IMapDefinition> ForestTypes
+		public List<IMapDefinition> ForestTypes
 		{
 			get {
 				return forestTypes;
@@ -97,21 +82,6 @@ namespace Landis.Extension.Output.WildlifeHabitat
             }
         }
         //---------------------------------------------------------------------
-        public Dictionary<string, double> HarvestPrescriptions
-        {
-            get
-            {
-                return harvestPrescriptions;
-            }
-            set
-            {
-                harvestPrescriptions = value;
-            }
-        }
-        //---------------------------------------------------------------------
-        // Dictionary with key equal to row names and
-        // values equal to a dictionary with key equal to column headings and
-        // values equal to suitability values
         public Dictionary<string,Dictionary<int, double>> Suitabilities
         {
             get
@@ -129,13 +99,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
         /// </summary>
         public SuitabilityParameters(int speciesCount)
         {
-            wildlifeName = "wildlifeName";
             coefficients = new double[speciesCount];
             forestTypes = new List<IMapDefinition>();
-            fireSeverities = new Dictionary<int, double>();
-            harvestPrescriptions = new Dictionary<string, double>();
+            fireSeverities = new Dictionary<int,double>();
             suitabilities = new Dictionary<string,Dictionary<int,double>>();
-            disturbanceType = "None";
         }
 
     }

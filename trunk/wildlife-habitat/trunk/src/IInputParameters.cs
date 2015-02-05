@@ -43,14 +43,6 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
             get;
         }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Suitability parameters
-        /// </summary>
-        List<ISuitabilityParameters> SuitabilityParameters
-        {
-            get;
-        }
 
 
     }
