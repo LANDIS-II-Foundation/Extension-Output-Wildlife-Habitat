@@ -1,4 +1,4 @@
-LandisData  	HabitatSuitabilityTable
+LandisData  	HabitatSuitabilityFile
 WildlifeName	species1
 
 SuitabilityType  AgeClass_ForestType	<< 'AgeClass_ForestType'

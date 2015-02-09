@@ -40,6 +40,15 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
         //---------------------------------------------------------------------
         /// <summary>
+        /// Harvest Prescription Table
+        /// </summary>
+        Dictionary<string, double> HarvestPrescriptions
+        {
+            get;
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
         /// Suitability Table
         /// </summary>
         Dictionary<string, Dictionary<int, double>> Suitabilities
@@ -47,6 +56,34 @@ namespace Landis.Extension.Output.WildlifeHabitat
             get;
         }
 
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Suitability Type
+        /// </summary>
+       string SuitabilityType
+        {
+            get;
+
+        }
+
+        //---------------------------------------------------------------------
+       /// <summary>
+       /// Wildlife Name
+       /// </summary>
+       string WildlifeName
+       {
+           get;
+
+       }
+       //---------------------------------------------------------------------
+       /// <summary>
+       /// DisturbanceType
+       /// </summary>
+       string DisturbanceType
+       {
+           get;
+
+       }
         //---------------------------------------------------------------------
     }
 }
