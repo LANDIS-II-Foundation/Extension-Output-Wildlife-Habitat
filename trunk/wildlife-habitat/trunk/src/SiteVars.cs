@@ -18,7 +18,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
         private static ISiteVar<Dictionary<int, int>> yearOfFire;
         private static ISiteVar<Dictionary<int, int>> yearOfHarvest;
-        private static ISiteVar<Dictionary<int,int[]>> dominantAge;
+        private static ISiteVar<int[]> dominantAge;
         private static ISiteVar<Dictionary<int, int[]>> forestType;
         private static ISiteVar<Dictionary<int, double>> suitabilityValue;
         private static ISiteVar<Dictionary<int, int>> ageAtFireYear;
@@ -35,7 +35,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
         //---------------------------------------------------------------------
 
-        public static void Initialize()
+        public static void Initialize(int suitabilityCount)
         {
             biomassCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>("Succession.BiomassCohorts");
             ageCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>("Succession.AgeCohorts");
@@ -48,7 +48,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             ageAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             yearOfHarvest = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             ageAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
-            dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int,int[]>>();
+            dominantAge = PlugIn.ModelCore.Landscape.NewSiteVar<int[]>();
             forestType = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int[]>>();
             forestTypeAtFireYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
             forestTypeAtHarvestYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, int>>();
@@ -80,15 +80,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 ageHarvestDict.Add(0, 0);
                 SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
 
-                Dictionary<int, int[]> domAgeDict = new Dictionary<int, int[]>();
                 int[] domAgeArray = new int[2];
-                domAgeDict.Add(0, domAgeArray);
-                SiteVars.DominantAge[site] = domAgeDict;
-
-                Dictionary<int, int[]> forTypeDict = new Dictionary<int, int[]>();
-                int[] forTypeArray = new int[2];
-                forTypeDict.Add(0, forTypeArray);
-                SiteVars.ForestType[site] = forTypeDict;
+                SiteVars.DominantAge[site] = domAgeArray;
 
                 Dictionary<int, int> forestTypeFireDict = new Dictionary<int, int>();
                 forestTypeFireDict.Add(0, 0);
@@ -106,6 +99,13 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 suitWtDict.Add(0, 0.0);
                 SiteVars.SuitabilityWeight[site] = suitWtDict;
 
+                Dictionary<int, int[]> forTypeDict = new Dictionary<int, int[]>();
+                for (int index = 0; index < suitabilityCount; index++)
+                {
+                    int[] forTypeArray = new int[2];
+                    forTypeDict.Add(index, forTypeArray);
+                }
+                SiteVars.ForestType[site] = forTypeDict;
             }
         }
        
@@ -210,7 +210,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         // Dictionary with key equal the index of the suitability file and 
         // value equal to an array of this year's and last year's dominant age class
         // [0] is this year, [1] is last year
-        public static ISiteVar<Dictionary<int, int[]>> DominantAge
+        public static ISiteVar<int[]> DominantAge
         {
             get
             {

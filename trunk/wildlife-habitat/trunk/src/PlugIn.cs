@@ -60,10 +60,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
 
             Timestep = parameters.Timestep;
-            SiteVars.Initialize();
+
             this.mapNameTemplate = parameters.MapFileNames;
             this.suitabilityFiles = parameters.SuitabilityFiles;
             this.suitabilityParameters = parameters.SuitabilityParameters;
+            SiteVars.Initialize(this.suitabilityFiles.Count);
             
 
         }
@@ -90,7 +91,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                     double suitabilityValue = 0;
                     // calculate dominant age as site variable (DomAge), store for retrieval
                     //  Note: DomAge site variable is an array of values giving dominant age for this year and last year
-                    UpdateDominantAge(index, site);
+                    UpdateDominantAge(site);
 
                     // calculate forest type as site variable (ForestType), store for retreival
                     //  Note: ForestType site variable is an array of values giving the index of forest type for this year and last year
@@ -160,7 +161,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                         //        store sitevar YearOfFire by index
                                         SiteVars.YearOfFire[site][index] = ModelCore.CurrentTime;
                                         //        read previous year dominant age
-                                        int prevYearDomAge = SiteVars.DominantAge[site][index][1];
+                                        int prevYearDomAge = SiteVars.DominantAge[site][1];
                                         //        store sitevar AgeAtFireYear by index
                                         SiteVars.AgeAtFireYear[site][index] = prevYearDomAge;
                                     }
@@ -198,7 +199,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                         //        store sitevar YearOfHarvest by index
                                         SiteVars.YearOfHarvest[site][index] = ModelCore.CurrentTime;
                                         //        read previous year dominant age
-                                        int prevYearDomAge = SiteVars.DominantAge[site][index][1];
+                                        int prevYearDomAge = SiteVars.DominantAge[site][1];
                                         //        store sitevar AgeAtHarvestYear by index
                                         SiteVars.AgeAtHarvestYear[site][index] = prevYearDomAge;
                                         //        store sitevar SuitabilityWeight by index
@@ -246,26 +247,35 @@ namespace Landis.Extension.Output.WildlifeHabitat
                         // if disturbanceType == "Fire" then:
                         if (mySuitabilityParameters.DisturbanceType == "Fire")
                         {
-                            //   Check this year fire severity
-                            int currentFireSeverity = SiteVars.FireSeverity[site];
-                            int timeofLastFire = SiteVars.TimeOfLastFire[site];
-                            //   if > 0 then 
-                            if (currentFireSeverity > 0 && timeofLastFire == ModelCore.CurrentTime)
+                            // Check if fire output exists
+                            if (SiteVars.FireSeverity == null)
                             {
-                                //      translate to suitability weight
-                                suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
-
-                                //      if suitability weight > 0 then
-                                if (suitabilityWeight > 0)
+                                string mesg = string.Format("The DisturbanceType is Fire, but FireSeverity SiteVariable is not defined.  Please double-check that a Fire extension is running.");
+                                throw new System.ApplicationException(mesg);
+                            }
+                            else
+                            {
+                                //   Check this year fire severity
+                                int currentFireSeverity = SiteVars.FireSeverity[site];
+                                int timeofLastFire = SiteVars.TimeOfLastFire[site];
+                                //   if > 0 then 
+                                if (currentFireSeverity > 0 && timeofLastFire == ModelCore.CurrentTime)
                                 {
-                                    //        store sitevar YearOfFire by index
-                                    SiteVars.YearOfFire[site][index] = ModelCore.CurrentTime;
-                                    //        read previous year forest type
-                                    int prevYearForType = SiteVars.ForestType[site][index][1];
-                                    //        store sitevar forestTypeAtFireYear by index
-                                    SiteVars.ForestTypeAtFireYear[site][index] = prevYearForType;
-                                    //        store sitevar SuitabilityWeight by index
-                                    SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
+                                    //      translate to suitability weight
+                                    suitabilityWeight = mySuitabilityParameters.FireSeverities[currentFireSeverity];
+
+                                    //      if suitability weight > 0 then
+                                    if (suitabilityWeight > 0)
+                                    {
+                                        //        store sitevar YearOfFire by index
+                                        SiteVars.YearOfFire[site][index] = ModelCore.CurrentTime;
+                                        //        read previous year forest type
+                                        int prevYearForType = SiteVars.ForestType[site][index][1];
+                                        //        store sitevar forestTypeAtFireYear by index
+                                        SiteVars.ForestTypeAtFireYear[site][index] = prevYearForType;
+                                        //        store sitevar SuitabilityWeight by index
+                                        SiteVars.SuitabilityWeight[site][index] = suitabilityWeight;
+                                    }
                                 }
                             }
                             //  read sitevar ForestTypeFireYear for age value
@@ -547,7 +557,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         // Calculate dominant age class
         // For age-only succession dominant has most cohorts
         // For biomass succession dominat has most biomass
-        public static void UpdateDominantAge(int index, Site site)
+        public static void UpdateDominantAge( Site site)
         {
             int domAge = 0;
             if (SiteVars.BiomassCohorts[site] == null)
@@ -558,8 +568,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             {
                 domAge = CalculateDomAgeBiomass(site);
             }
-            SiteVars.DominantAge[site][index][1] = SiteVars.DominantAge[site][index][0];
-            SiteVars.DominantAge[site][index][0] = domAge;
+            SiteVars.DominantAge[site][1] = SiteVars.DominantAge[site][0];
+            SiteVars.DominantAge[site][0] = domAge;
         }
         //---------------------------------------------------------------------
         public static void UpdateForestType(int index, ISuitabilityParameters suitabilityParameters, Site site)
