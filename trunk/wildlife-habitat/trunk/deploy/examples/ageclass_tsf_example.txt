@@ -1,0 +1,27 @@
+LandisData  	HabitatSuitabilityFile
+WildlifeName	species2
+
+SuitabilityType  AgeClass_TimeSinceFire	<< 'AgeClass_ForestType'
+					<< 'AgeClass_TimeSinceFire'
+					<< 'ForestType_TimeSinceFire'
+
+FireSeverityTable
+<< Severity Class	SuitabilityWeight
+	0			0
+	1			0
+	2			0
+	3			0
+	4			1
+	5			1
+
+
+SuitabilityTable
+<< MaxTimeSinceFire	Maximum Age Values
+<< ----------		-------------------
+			10	30	999
+<<			Suitability Values
+<<			-------------------
+  5			1	2	3
+  10			0	1	2
+  9999			0	0	1
+
