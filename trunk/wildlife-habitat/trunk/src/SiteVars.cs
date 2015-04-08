@@ -65,46 +65,56 @@ namespace Landis.Extension.Output.WildlifeHabitat
             foreach (Site site in PlugIn.ModelCore.Landscape.ActiveSites)
             {
                 Dictionary<int, int> yofDict = new Dictionary<int, int>();
-                yofDict.Add(0, -99999);
-                SiteVars.YearOfFire[site] = yofDict;
+              
 
                 Dictionary<int, int> ageFireDict = new Dictionary<int, int>();
-                ageFireDict.Add(0, 0);
-                SiteVars.AgeAtFireYear[site] = ageFireDict;
+                
 
                 Dictionary<int, int> yohDict = new Dictionary<int, int>();
-                yohDict.Add(0, 0);
-                SiteVars.YearOfHarvest[site] = yohDict;
+                
 
                 Dictionary<int, int> ageHarvestDict = new Dictionary<int, int>();
-                ageHarvestDict.Add(0, 0);
-                SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
+                
 
                 int[] domAgeArray = new int[2];
                 SiteVars.DominantAge[site] = domAgeArray;
 
                 Dictionary<int, int> forestTypeFireDict = new Dictionary<int, int>();
-                forestTypeFireDict.Add(0, 0);
-                SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
+                
 
                 Dictionary<int, int> forestTypeHarvestDict = new Dictionary<int, int>();
-                forestTypeHarvestDict.Add(0, 0);
-                SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
+               
 
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
-                suitValDict.Add(0, 0.0);
-                SiteVars.SuitabilityValue[site] = suitValDict;
+                
 
                 Dictionary<int, double> suitWtDict = new Dictionary<int, double>();
-                suitWtDict.Add(0, 0.0);
-                SiteVars.SuitabilityWeight[site] = suitWtDict;
+                
 
                 Dictionary<int, int[]> forTypeDict = new Dictionary<int, int[]>();
                 for (int index = 0; index < suitabilityCount; index++)
                 {
                     int[] forTypeArray = new int[2];
                     forTypeDict.Add(index, forTypeArray);
+
+                    yofDict.Add(index, -99999);
+                    ageFireDict.Add(index, -99999);
+                    yohDict.Add(index, -99999);
+                    ageHarvestDict.Add(index, -99999);
+                    forestTypeFireDict.Add(index, -99999);
+                    forestTypeHarvestDict.Add(index, -99999);
+                    suitValDict.Add(index, 0.0);
+                    suitWtDict.Add(index, 0.0);
                 }
+
+                SiteVars.SuitabilityWeight[site] = suitWtDict;
+                SiteVars.SuitabilityValue[site] = suitValDict;
+                SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
+                SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
+                SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
+                SiteVars.YearOfHarvest[site] = yohDict;
+                SiteVars.AgeAtFireYear[site] = ageFireDict;
+                SiteVars.YearOfFire[site] = yofDict;
                 SiteVars.ForestType[site] = forTypeDict;
             }
         }

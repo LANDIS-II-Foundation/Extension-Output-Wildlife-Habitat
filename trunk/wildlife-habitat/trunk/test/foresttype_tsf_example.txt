@@ -1,9 +1,9 @@
 LandisData  	HabitatSuitabilityFile
 WildlifeName	species3
 
-SuitabilityType  ForestType_TimeSinceDisturbance	<< 'AgeClass_ForestType'
-							<< 'AgeClass_TimeSinceDisturbance'
-							<< 'ForestType_TimeSinceDisturbance'
+SuitabilityType  ForestType_TimeSinceFire	<< 'AgeClass_ForestType'
+						<< 'AgeClass_TimeSinceFire'
+						<< 'ForestType_TimeSinceFire'
 ReclassCoefficients
 >>	Species		ReclassCoeff
 >>	--------	------------
@@ -27,8 +27,8 @@ ForestTypeTable
 	SpruceFir		piceglau abiebals
 	Other			poputrem betupapy
 
-DisturbanceTable	Fire
-<<Severity Class	SuitabilityWeight
+FireSeverityTable
+<< Severity Class	SuitabilityWeight
 	0			0
 	1			0
 	2			0
