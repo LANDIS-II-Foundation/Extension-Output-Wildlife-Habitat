@@ -191,9 +191,12 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                 //   if != null then 
                                 if (currentprescriptionName != null && timeofLastHarvest == ModelCore.CurrentTime)
                                 {
-                                    //      translate to suitability weight
-                                    suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
-                                    //      if suitability weight > 0 then
+                                    if (mySuitabilityParameters.HarvestPrescriptions.TryGetValue(currentprescriptionName, out suitabilityWeight))
+                                    {
+                                        //      translate to suitability weight
+                                        suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
+                                        //      if suitability weight > 0 then
+                                    }
                                     if (suitabilityWeight > 0)
                                     {
                                         //        store sitevar YearOfHarvest by index
@@ -302,9 +305,12 @@ namespace Landis.Extension.Output.WildlifeHabitat
                                 //   if != null then 
                                 if (currentprescriptionName != null && timeofLastHarvest == ModelCore.CurrentTime)
                                 {
-                                    //      translate to suitability weight
-                                    suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
-                                    //      if suitability weight > 0 then
+                                    if (mySuitabilityParameters.HarvestPrescriptions.TryGetValue(currentprescriptionName, out suitabilityWeight))
+                                    {
+                                        //      translate to suitability weight
+                                        suitabilityWeight = mySuitabilityParameters.HarvestPrescriptions[currentprescriptionName];
+                                        //      if suitability weight > 0 then
+                                    }
                                     if (suitabilityWeight > 0)
                                     {
                                         //        store sitevar YearOfHarvest by index
