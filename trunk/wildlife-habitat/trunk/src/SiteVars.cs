@@ -35,7 +35,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
         //---------------------------------------------------------------------
 
-        public static void Initialize(int suitabilityCount)
+        public static void Initialize(List<ISuitabilityParameters> suitabilityParameters)
         {
             biomassCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>("Succession.BiomassCohorts");
             ageCohorts = PlugIn.ModelCore.GetSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>("Succession.AgeCohorts");
@@ -65,14 +65,8 @@ namespace Landis.Extension.Output.WildlifeHabitat
             foreach (Site site in PlugIn.ModelCore.Landscape.ActiveSites)
             {
                 Dictionary<int, int> yofDict = new Dictionary<int, int>();
-              
-
                 Dictionary<int, int> ageFireDict = new Dictionary<int, int>();
-                
-
                 Dictionary<int, int> yohDict = new Dictionary<int, int>();
-                
-
                 Dictionary<int, int> ageHarvestDict = new Dictionary<int, int>();
                 
 
@@ -80,42 +74,71 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 SiteVars.DominantAge[site] = domAgeArray;
 
                 Dictionary<int, int> forestTypeFireDict = new Dictionary<int, int>();
-                
-
                 Dictionary<int, int> forestTypeHarvestDict = new Dictionary<int, int>();
-               
-
                 Dictionary<int, double> suitValDict = new Dictionary<int, double>();
-                
-
                 Dictionary<int, double> suitWtDict = new Dictionary<int, double>();
-                
-
                 Dictionary<int, int[]> forTypeDict = new Dictionary<int, int[]>();
-                for (int index = 0; index < suitabilityCount; index++)
-                {
-                    int[] forTypeArray = new int[2];
-                    forTypeDict.Add(index, forTypeArray);
 
-                    yofDict.Add(index, -99999);
-                    ageFireDict.Add(index, -99999);
-                    yohDict.Add(index, -99999);
-                    ageHarvestDict.Add(index, -99999);
-                    forestTypeFireDict.Add(index, -99999);
-                    forestTypeHarvestDict.Add(index, -99999);
+                for (int index = 0; index < suitabilityParameters.Count; index++)
+                {
                     suitValDict.Add(index, 0.0);
                     suitWtDict.Add(index, 0.0);
+
+                    int[] forTypeArray = new int[2];
+
+                    if (suitabilityParameters[index].SuitabilityType == "AgeClass_ForestType")
+                    {
+                        forTypeDict.Add(index, forTypeArray);
+                        SiteVars.ForestType[site] = forTypeDict;
+                    }
+                    else if (suitabilityParameters[index].SuitabilityType == "AgeClass_TimeSinceDisturbance")
+                    {
+                        if(suitabilityParameters[index].DisturbanceType == "Fire")
+                        {
+                            yofDict.Add(index, -99999);
+                            SiteVars.YearOfFire[site] = yofDict;
+                            ageFireDict.Add(index, -99999);
+                            SiteVars.AgeAtFireYear[site] = ageFireDict;
+                        }
+                        else if (suitabilityParameters[index].DisturbanceType == "Harvest")
+                        {
+                            yohDict.Add(index, -99999);
+                            SiteVars.YearOfHarvest[site] = yohDict;
+                            ageHarvestDict.Add(index, -99999);
+                            SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
+                        }
+                    }
+                    else if (suitabilityParameters[index].SuitabilityType == "ForestType_TimeSinceDisturbance")
+                    {
+                        if (suitabilityParameters[index].DisturbanceType == "Fire")
+                        {
+                            SiteVars.ForestType[site] = forTypeDict;
+                            yofDict.Add(index, -99999);
+                            SiteVars.YearOfFire[site] = yofDict;
+                            forestTypeFireDict.Add(index, -99999);
+                            SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
+                        }
+                        else if (suitabilityParameters[index].DisturbanceType == "Harvest")
+                        {
+                            SiteVars.ForestType[site] = forTypeDict;
+                            yohDict.Add(index, -99999);
+                            SiteVars.YearOfHarvest[site] = yohDict;
+                            forestTypeHarvestDict.Add(index, -99999);
+                            SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
+                        }
+                    }
+                                        
                 }
 
                 SiteVars.SuitabilityWeight[site] = suitWtDict;
                 SiteVars.SuitabilityValue[site] = suitValDict;
-                SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
-                SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
-                SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
-                SiteVars.YearOfHarvest[site] = yohDict;
-                SiteVars.AgeAtFireYear[site] = ageFireDict;
-                SiteVars.YearOfFire[site] = yofDict;
-                SiteVars.ForestType[site] = forTypeDict;
+                //SiteVars.ForestTypeAtHarvestYear[site] = forestTypeHarvestDict;
+                //SiteVars.ForestTypeAtFireYear[site] = forestTypeFireDict;
+                //SiteVars.AgeAtHarvestYear[site] = ageHarvestDict;
+                //SiteVars.YearOfHarvest[site] = yohDict;
+                //SiteVars.AgeAtFireYear[site] = ageFireDict;
+                //SiteVars.YearOfFire[site] = yofDict;
+                //SiteVars.ForestType[site] = forTypeDict;
             }
         }
        

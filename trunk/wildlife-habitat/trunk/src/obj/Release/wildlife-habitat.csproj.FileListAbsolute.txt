@@ -9,3 +9,4 @@ C:\bin\Debug\Landis.Extension.Output.WildlifeHabitat.dll
 C:\bin\Debug\Landis.Extension.Output.WildlifeHabitat.pdb
 C:\BRM\LANDIS_II\bin\Debug\Landis.Extension.Output.WildlifeHabitat.dll
 C:\BRM\LANDIS_II\bin\Debug\Landis.Extension.Output.WildlifeHabitat.pdb
+C:\BRM\LANDIS_II\Code\landis-extensions\trunk\wildlife-habitat\trunk\src\obj\Release\wildlife-habitat.csprojResolveAssemblyReference.cache

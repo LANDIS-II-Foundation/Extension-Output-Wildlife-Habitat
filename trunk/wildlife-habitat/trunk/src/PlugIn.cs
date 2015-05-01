@@ -1,5 +1,4 @@
-//  Copyright 2005-2010 Portland State University, University of Wisconsin-Madison
-//  Authors:  Robert M. Scheller, Jimm Domingo
+//  Authors:  Brian R. Miranda, Donald J. Brown
 
 using Landis.Core;
 using Landis.Library.BiomassCohorts;
@@ -64,7 +63,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             this.mapNameTemplate = parameters.MapFileNames;
             this.suitabilityFiles = parameters.SuitabilityFiles;
             this.suitabilityParameters = parameters.SuitabilityParameters;
-            SiteVars.Initialize(this.suitabilityFiles.Count);
+            SiteVars.Initialize(this.suitabilityParameters);
             
 
         }
@@ -580,22 +579,25 @@ namespace Landis.Extension.Output.WildlifeHabitat
         //---------------------------------------------------------------------
         public static void UpdateForestType(int index, ISuitabilityParameters suitabilityParameters, Site site)
         {
-            double[] reclassCoeffs = suitabilityParameters.ReclassCoefficients;
-            int forTypeIndex  = 0;
-            foreach (IMapDefinition map in suitabilityParameters.ForestTypes)
+            if ((suitabilityParameters.SuitabilityType == "AgeClass_ForestType") || (suitabilityParameters.SuitabilityType == "ForestType_TimeSinceDisturbance"))
             {
-                List<IForestType> forestTypes = map.ForestTypes;
-                if (SiteVars.BiomassCohorts[site] == null)
+                double[] reclassCoeffs = suitabilityParameters.ReclassCoefficients;
+                int forTypeIndex = 0;
+                foreach (IMapDefinition map in suitabilityParameters.ForestTypes)
                 {
-                    forTypeIndex = CalcForestTypeAge(forestTypes, site, reclassCoeffs);
+                    List<IForestType> forestTypes = map.ForestTypes;
+                    if (SiteVars.BiomassCohorts[site] == null)
+                    {
+                        forTypeIndex = CalcForestTypeAge(forestTypes, site, reclassCoeffs);
+                    }
+                    else
+                    {
+                        forTypeIndex = CalcForestTypeBiomass(forestTypes, site, reclassCoeffs);
+                    }
                 }
-                else
-                {
-                    forTypeIndex = CalcForestTypeBiomass(forestTypes, site, reclassCoeffs);
-                }
+                SiteVars.ForestType[site][index][1] = SiteVars.ForestType[site][index][0];
+                SiteVars.ForestType[site][index][0] = forTypeIndex;
             }
-            SiteVars.ForestType[site][index][1] = SiteVars.ForestType[site][index][0];
-            SiteVars.ForestType[site][index][0] = forTypeIndex;
         }
         //---------------------------------------------------------------------
         public static int CalculateDomAgeForestType(Site site, IForestType forestType)
