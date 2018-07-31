@@ -1,0 +1,46 @@
+LandisData  	HabitatSuitabilityFile
+WildlifeName	species3
+
+SuitabilityType  ForestType_TimeSinceDisturbance	<< 'AgeClass_ForestType'
+							<< 'AgeClass_TimeSinceDisturbance'
+							<< 'ForestType_TimeSinceDisturbance'
+ReclassCoefficients
+>>	Species		ReclassCoeff
+>>	--------	------------
+	pinubank	1.0
+	pinuresi	0.0
+	pinustro	0.0
+	acersacc	1.0
+	betualle	0.0
+	abiebals	0.0
+	acerrubr	0.0
+	fraxamer	0.0
+	piceglau	0.0
+	poputrem	0.0
+	betupapy	0.0
+
+ForestTypeTable
+>>	Forest Type		Species
+>> 	-----------		-------
+	Pine			pinubank pinuresi pinustro
+	MapleHardwood		acersacc betualle abiebals acerrubr fraxamer -pinubank
+	SpruceFir		piceglau abiebals
+	Other			poputrem betupapy
+
+DisturbanceTable	Harvest
+<<Severity Class	SuitabilityWeight
+	AspenClearcut		1
+	MaxAgeClearcut		1
+	SelectiveNorthernHardwood	1
+
+
+SuitabilityTable
+<< ForestType	Maximum Time Since Fire
+<< ----------	-----------------------
+		5	10	9999
+<<		Suitability Values
+<<		-----------------------
+Pine		2	2	2
+MapleHardwood	2	2	2
+SpruceFir	2	2	2
+Other		2	2	2

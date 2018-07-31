@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Landis.Extension.Output.WildlifeHabitat</RootNamespace>
+    <AssemblyName>Landis.Extension.Output.WildlifeHabitat-v2</AssemblyName>
+    <AssemblyTitle>Landis.Extension.Output.WildlifeHabitat-v2</AssemblyTitle>
+    <AssemblyCompany>Landis-II-Foundation</AssemblyCompany>
+    <AssemblyProduct>Landis.Extension.Output.WildlifeHabitat-v2</AssemblyProduct>
+    <AssemblyCopyright>USDA Forest Service</AssemblyCopyright>
+    <AssemblyVersion>2.0</AssemblyVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/LANDIS-II-Foundation/Extension-Output-Wildlife-Habitat</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://github.com/LANDIS-II-Foundation/Extension-Output-Wildlife-Habitat/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.landis-ii.org</PackageProjectUrl>
+    <NeutralLanguage>English</NeutralLanguage>
+    <Authors>USDA Forest Service</Authors>
+    <Product>Landis.Extension.Output.WildlifeHabitat-v2</Product>
+    <Copyright>USDA Forest Service</Copyright>
+    <Version>2.0</Version>
+    <PackageTags>LANDIS-II;Landis;Extension;Wildlife Habitat</PackageTags>
+    <Description></Description>
+    <PackageReleaseNotes>.NET Standard 2.0 update.</PackageReleaseNotes>
+    <FileVersion>7.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Landis.Core" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Landis.Library.AgeOnlyCohorts-v3">
+      <HintPath>lib\Landis.Library.AgeOnlyCohorts-v3.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.BiomassCohorts-v3">
+      <HintPath>lib\Landis.Library.BiomassCohorts-v3.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Cohorts-v2">
+      <HintPath>lib\Landis.Library.Cohorts-v2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
+

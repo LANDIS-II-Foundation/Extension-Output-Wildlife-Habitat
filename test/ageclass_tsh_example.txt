@@ -1,0 +1,24 @@
+LandisData  	HabitatSuitabilityFile
+WildlifeName	species2
+
+SuitabilityType  AgeClass_TimeSinceDisturbance	<< 'AgeClass_ForestType'
+						<< 'AgeClass_TimeSinceDisturbance'
+						<< 'ForestType_TimeSinceDisturbance'
+
+DisturbanceTable	Harvest
+<<Severity Class	SuitabilityWeight
+	AspenClearCut		0
+	MaxAgeClearCut		0.5
+	SelectiveNorthernHardwood	1
+
+
+SuitabilityTable
+<< MaxTimeSinceDist	Maximum Age Values
+<< ----------		-------------------
+			10	30	999
+<<			Suitability Values
+<<			-------------------
+  5			1	2	3
+  10			0	1	2
+  9999			0	0	1
+

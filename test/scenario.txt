@@ -1,0 +1,38 @@
+LandisData  Scenario
+
+Duration  50
+
+Species   species.txt
+
+Ecoregions      ./ecoregions.txt
+EcoregionsMap   ./simple1.img
+
+CellLength  100 << meters, 100 x 100 m = 1 ha
+
+
+>> NOTE:  This example assumes that you have downloaded and installed 
+>> the correpsonding extensions.  These extensions are currently packaged
+>> together as a package.
+
+>> Succession Extension     Initialization File
+>> --------------------     -------------------
+   "Biomass Succession"    DJBbiomass-succession.txt
+
+
+>> Disturbance Extensions   Initialization File
+>> ----------------------   -------------------
+  "Base Fire"		    "base-fire-6.0.txt"
+  "Base Harvest"	    "BaseHarvest-v1.2-Sample-Input.txt"
+
+>>   DisturbancesRandomOrder  yes  << optional parameter; default = no
+
+
+>> Other Extensions         Initialization File
+>> ----------------         -------------------
+>>   "Wildlife Habitat Output"  DJBwildlife_habitat_input.txt
+   "Wildlife Habitat Output"  wildlife_habitat_input.txt
+>>   "Output Biomass Reclass"   BRMoutput-biomass-reclass.txt 
+
+
+>>RandomNumberSeed  4,357  << optional parameter; default = the seed is
+                         << randomly generated using the current time

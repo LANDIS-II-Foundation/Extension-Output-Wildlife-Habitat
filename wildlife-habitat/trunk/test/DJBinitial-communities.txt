@@ -1,7 +1,0 @@
-LandisData   "Initial Communities"
-
-
->> young jackpine oak
-MapCode  1
-   pinubank 10
-   acersacc 10

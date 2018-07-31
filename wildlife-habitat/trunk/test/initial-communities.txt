@@ -1,7 +1,0 @@
-LandisData   "Initial Communities"
-
-
->> young jackpine oak
-MapCode  1
-   pinubank 30 50
-   querelli 10 40 70
