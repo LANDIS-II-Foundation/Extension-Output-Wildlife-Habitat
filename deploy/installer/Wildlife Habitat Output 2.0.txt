@@ -3,7 +3,7 @@ LandisData   Extension
 Name         "Wildlife Habitat Output"
 Version      "2.0"
 Type         output
-Assembly     Landis.Extension.Output.WildlifeHabitat-v2
+Assembly     Landis.Extension.Output.WildlifeHabitat
 Class        Landis.Extension.Output.WildlifeHabitat.PlugIn
 Description  "Wildlife habitat suitability output"
 CoreVersion  7.0
