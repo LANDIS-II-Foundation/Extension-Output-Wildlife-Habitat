@@ -1,5 +1,4 @@
-//  Copyright 2005-2010 Portland State University, University of Wisconsin-Madison
-//  Authors:  Robert M. Scheller, Jimm Domingo
+//  Authors:  Brian R. Miranda, Donald J. Brown
 
 using Landis.Core;
 using Landis.SpatialModeling;
