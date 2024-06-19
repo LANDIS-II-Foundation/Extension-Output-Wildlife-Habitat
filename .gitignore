@@ -208,3 +208,14 @@ FakesAssemblies/
 # LANDIS-II
 /wildlife-habitat/trunk/src/lib/*.dll
 //wildlife-habitat/trunk/src/.vs
+src/lib/Landis.Library.UniversalCohorts-v1.dll
+test/Core8-Wildlife3.0/Biomass-succession-log.csv
+/test/Core8-Wildlife3.0/biomass-succession
+test/Core8-Wildlife3.0/Climate-annual-log.csv
+test/Core8-Wildlife3.0/Climate-future-input-log.csv
+test/Core8-Wildlife3.0/Climate-spinup-input-log.csv
+/test/Core8-Wildlife3.0/harvest
+test/Core8-Wildlife3.0/Landis-log.txt
+test/Core8-Wildlife3.0/Landis-climate-log.txt
+/test/Core8-Wildlife3.0/Metadata
+/test/Core8-Wildlife3.0/output

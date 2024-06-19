@@ -1,0 +1,51 @@
+LandisData  	HabitatSuitabilityFile
+WildlifeName	BBWOForestTypeTSF
+
+SuitabilityType  ForestType_TimeSinceDisturbance	<< 'AgeClass_ForestType'
+							<< 'AgeClass_TimeSinceDisturbance'
+							<< 'ForestType_TimeSinceDisturbance'
+ReclassCoefficients
+>>	Species		ReclassCoeff
+>>	--------	------------
+	abiebals	1.0
+	acerrubr	1.0
+	acersacc	1.0
+	betualle	1.0
+	betupapy	1.0
+	fraxamer	1.0
+	piceglau	1.0
+	pinubank	1.0
+	pinuresi	1.0
+	pinustro	1.0
+	poputrem	1.0
+	querelli	1.0
+	querrubr	1.0
+	thujocci	1.0
+	tiliamer	1.0
+
+ForestTypeTable
+>>	Forest Type		Species
+>> 	-----------		-------
+	Deciduous		acerrubr acersacc betualle betupapy fraxamer poputrem querelli querrubr 
+	Coniferous		abiebals piceglau pinustro thujocci pinubank pinuresi
+	Other			tiliamer
+
+
+DisturbanceTable	Fire
+<<Severity Class	SuitabilityWeight
+	0			0
+	1			0
+	2			0
+	3			0
+	4			1
+	5			1
+
+SuitabilityTable
+<< ForestType	Maximum Time Since Fire
+<< ----------	-----------------------
+		5	10	9999
+<<		Suitability Values
+<<		-----------------------
+Deciduous	2	1	1
+Coniferous	2	1	1
+Other		0	0	0

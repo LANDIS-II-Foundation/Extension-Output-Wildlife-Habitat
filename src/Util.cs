@@ -1,6 +1,6 @@
 //  Authors:  Robert M. Scheller, Jimm Domingo
 
-using Landis.Library.BiomassCohorts;
+using Landis.Library.UniversalCohorts;
 //using Landis.Cohorts;
 
 namespace Landis.Extension.Output.WildlifeHabitat
@@ -15,7 +15,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             int total = 0;
             if (cohorts != null)
                 foreach (ICohort cohort in cohorts)
-                    total += cohort.Biomass;
+                    total += cohort.Data.Biomass;
             return total;
         }
 
