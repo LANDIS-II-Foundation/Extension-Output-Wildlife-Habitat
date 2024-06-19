@@ -1,7 +1,7 @@
 //  Authors:  Brian R. Miranda, Donald J. Brown
 
 using Landis.Core;
-using Landis.Library.BiomassCohorts;
+using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 using System.Collections.Generic;
 using System;
@@ -419,10 +419,10 @@ namespace Landis.Extension.Output.WildlifeHabitat
             {
                 double sppValue = 0.0;
 
-                if (SiteVars.BiomassCohorts[site] == null)
+                if (SiteVars.UniversalCohorts[site] == null)
                     break;
 
-                sppValue = Util.ComputeBiomass(SiteVars.BiomassCohorts[site][species]);
+                sppValue = Util.ComputeBiomass(SiteVars.UniversalCohorts[site][species]);
 
                 forTypeCnt = 0;
                 foreach(IForestType ftype in forestTypes)
@@ -466,7 +466,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
             double[] forTypValue = new double[forestTypes.Count];
             foreach (ISpecies species in PlugIn.ModelCore.Species)
             {
-                if (SiteVars.AgeCohorts[site] != null)
+                if (SiteVars.UniversalCohorts[site] != null)
                 {
                     ushort maxSpeciesAge = 0;
                     double sppValue = 0.0;
@@ -519,9 +519,9 @@ namespace Landis.Extension.Output.WildlifeHabitat
             if (!site.IsActive)
                 return 0;
             ushort max = 0;
-            if (SiteVars.BiomassCohorts[site] == null)
+            if (SiteVars.UniversalCohorts[site] == null)
             {
-                if (SiteVars.AgeCohorts[site] == null)
+                if (SiteVars.UniversalCohorts[site] == null)
                 {
                     PlugIn.ModelCore.UI.WriteLine("Cohort are null.");
                     return 0;
@@ -529,14 +529,14 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 else
                 {
                     max = 0;
-                    foreach (Landis.Library.AgeOnlyCohorts.ISpeciesCohorts sppCohorts in SiteVars.AgeCohorts[site])
+                    foreach (ISpeciesCohorts sppCohorts in SiteVars.UniversalCohorts[site])
                     {
                         if (sppCohorts.Species == spp)
                         {
                             //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
-                            foreach (Landis.Library.AgeOnlyCohorts.ICohort cohort in sppCohorts)
-                                if (cohort.Age > max)
-                                    max = cohort.Age;
+                            foreach (ICohort cohort in sppCohorts)
+                                if (cohort.Data.Age > max)
+                                    max = cohort.Data.Age;
                         }
                     }
                 }
@@ -545,14 +545,14 @@ namespace Landis.Extension.Output.WildlifeHabitat
             {
                 max = 0;
 
-                foreach (ISpeciesCohorts sppCohorts in SiteVars.AgeCohorts[site])
+                foreach (ISpeciesCohorts sppCohorts in SiteVars.UniversalCohorts[site])
                 {
                     if (sppCohorts.Species == spp)
                     {
                         //ModelCore.UI.WriteLine("cohort spp = {0}, compare species = {1}.", sppCohorts.Species.Name, spp.Name);
                         foreach (ICohort cohort in sppCohorts)
-                            if (cohort.Age > max)
-                                max = cohort.Age;
+                            if (cohort.Data.Age > max)
+                                max = cohort.Data.Age;
                     }
                 }
             }
@@ -565,7 +565,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
         public static void UpdateDominantAge( Site site)
         {
             int domAge = 0;
-            if (SiteVars.BiomassCohorts[site] == null)
+            if (SiteVars.UniversalCohorts[site] == null)
             {
                 domAge = CalculateDomAgeAgeOnly(site);
             }
@@ -586,7 +586,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 foreach (IMapDefinition map in suitabilityParameters.ForestTypes)
                 {
                     List<IForestType> forestTypes = map.ForestTypes;
-                    if (SiteVars.BiomassCohorts[site] == null)
+                    if (SiteVars.UniversalCohorts[site] == null)
                     {
                         forTypeIndex = CalcForestTypeAge(forestTypes, site, reclassCoeffs);
                     }
@@ -612,14 +612,14 @@ namespace Landis.Extension.Output.WildlifeHabitat
                 speciesIndex++;
             }
             Dictionary<int, int> ageDictionary = new Dictionary<int, int>();
-            foreach (ISpeciesCohorts sppCohorts in SiteVars.BiomassCohorts[site])
+            foreach (ISpeciesCohorts sppCohorts in SiteVars.UniversalCohorts[site])
             {
                 if (speciesList.Contains(sppCohorts.Species))
                 {
                     foreach (ICohort cohort in sppCohorts)
                     {
-                        int age = cohort.Age;
-                        int biomass = cohort.Biomass;
+                        int age = cohort.Data.Age;
+                        int biomass = cohort.Data.Biomass;
                         if (ageDictionary.ContainsKey(age))
                         {
                             ageDictionary[age] = ageDictionary[age] + biomass;
@@ -648,12 +648,12 @@ namespace Landis.Extension.Output.WildlifeHabitat
         {
 
             Dictionary<int, int> ageDictionary = new Dictionary<int, int>();
-            foreach (ISpeciesCohorts sppCohorts in SiteVars.BiomassCohorts[site])
+            foreach (ISpeciesCohorts sppCohorts in SiteVars.UniversalCohorts[site])
             {
                 foreach (ICohort cohort in sppCohorts)
                 {
-                    int age = cohort.Age;
-                    int biomass = cohort.Biomass;
+                    int age = cohort.Data.Age;
+                    int biomass = cohort.Data.Biomass;
                     if (ageDictionary.ContainsKey(age))
                     {
                         ageDictionary[age] = ageDictionary[age] + biomass;
@@ -680,11 +680,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
         public static int CalculateDomAgeAgeOnly(Site site)
         {
             Dictionary<int, int> ageDictionary = new Dictionary<int, int>();
-            foreach (ISpeciesCohorts sppCohorts in SiteVars.AgeCohorts[site])
+            foreach (ISpeciesCohorts sppCohorts in SiteVars.UniversalCohorts[site])
             {
                 foreach (ICohort cohort in sppCohorts)
                 {
-                    int age = cohort.Age;
+                    int age = cohort.Data.Age;
                     if (ageDictionary.ContainsKey(age))
                     {
                         ageDictionary[age] = ageDictionary[age] + 1;
@@ -708,6 +708,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
             return domAge;
         }
 
+        public override void AddCohortData()
+        {
+            // ADD CUSTOM DYNAMIC COHORT PARAMETERS HERE
+            return;
+        }
     }
     
 }
