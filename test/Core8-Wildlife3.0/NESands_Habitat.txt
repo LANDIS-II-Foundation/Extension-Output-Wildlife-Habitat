@@ -4,7 +4,7 @@ Timestep  1
 
 OutputTimestep  10
 
-MapFileNames	output/habitat/{wildlifeName}-{timestep}.img
+MapFileNames	output/habitat/{wildlifeName}-{timestep}.tif
 
 SuitabilityFiles  	BBWOAgeForestType.txt
 			BBWOAgeTSH.txt

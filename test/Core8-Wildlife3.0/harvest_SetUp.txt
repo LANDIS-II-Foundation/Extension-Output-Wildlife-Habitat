@@ -6,9 +6,9 @@ LandisData  "Biomass Harvest"
 >>-----------------
 Timestep		5
 
-ManagementAreas 	./biomass-harvest_Management_s2e1.gis
+ManagementAreas 	./harvest_Management_zones.tif
 
-Stands     		./biomass-harvest_Stand_s2e1.gis
+Stands     		./harvest_Stands.tif
 
 
 
@@ -41,7 +41,7 @@ Prescription MaxAgeClearcut
 >> OUTPUTS
 >> ----------
 
-PrescriptionMaps    harvest/biomass-harvest-prescripts-{timestep}.img
-BiomassMaps         harvest/biomass-removed-{timestep}.img
+PrescriptionMaps    harvest/biomass-harvest-prescripts-{timestep}.tif
+BiomassMaps         harvest/biomass-removed-{timestep}.tif
 EventLog            harvest/biomass-harvest-event-log.csv
 SummaryLog	    harvest/biomass-harvest-summary-log.csv

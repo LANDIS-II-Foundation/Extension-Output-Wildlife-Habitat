@@ -6,7 +6,7 @@ LandisData  "Scenario"
 >>----------------------------------------------
 
 >>	1. Provide the Required Inputs
->>	2. Sekect ONE Succession Extension
+>>	2. Select ONE Succession Extension
 >>	3. Select ONE OR MORE Disturbance Extensions (but only ONE harvest extension)
 >>	4. Select ONE OR MORE (compatible) Output Extensions
 
@@ -20,10 +20,10 @@ LandisData  "Scenario"
 
 Duration  	50
 
-Species   	./species_s2e1.txt
+Species   	Core_species_data.txt
 
-Ecoregions      ./ecoregions_s2e1.txt
-EcoregionsMap   ./ecoregions_s2e1.gis
+Ecoregions      ./ecoregions.txt
+EcoregionsMap   ./ecoregions.tif
 
 CellLength  	100 << meters, 100 x 100 m = 1 ha
 
@@ -35,7 +35,7 @@ CellLength  	100 << meters, 100 x 100 m = 1 ha
 
 >> 	Succession Extension     Initialization File
 >> 	--------------------     -------------------
-	"Biomass Succession"	biomass-succession_SetUp_s2e1.txt
+	"Biomass Succession"	biomass-succession.txt
 
 
 >> --------------------------
@@ -44,7 +44,7 @@ CellLength  	100 << meters, 100 x 100 m = 1 ha
 
 >> 	Disturbance Extension	Initialization File
 >>	--------------------	-------------------
-"Biomass Harvest"			biomass-harvest_SetUp_s2e1.txt
+	"Biomass Harvest"	harvest_SetUp.txt
 
 
 >>   DisturbancesRandomOrder  yes  	<< optional
