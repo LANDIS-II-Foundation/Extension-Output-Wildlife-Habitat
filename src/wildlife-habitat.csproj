@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Landis.Extension.Output.WildlifeHabitat</RootNamespace>
-    <AssemblyName>Landis.Extension.Output.WildlifeHabitat-v3</AssemblyName>
-    <AssemblyTitle>Landis.Extension.Output.WildlifeHabitat-v2</AssemblyTitle>
-    <AssemblyCompany>Landis-II-Foundation</AssemblyCompany>
-    <AssemblyProduct>Landis.Extension.Output.WildlifeHabitat-v2</AssemblyProduct>
-    <AssemblyCopyright>USDA Forest Service</AssemblyCopyright>
+	  <RootNamespace>Landis.Extension.Output.WildlifeHabitat</RootNamespace>
+	  <AssemblyCompany>Landis-II-Foundation</AssemblyCompany>
+	  <AssemblyProduct>Landis.Extension.Output.WildlifeHabitat-v3</AssemblyProduct>
+	  <AssemblyName>Landis.Extension.Output.WildlifeHabitat-v3</AssemblyName>
+    <AssemblyTitle>Landis.Extension.Output.WildlifeHabitat-v3</AssemblyTitle>
+    <AssemblyCopyright>The LANDIS-II Foundation</AssemblyCopyright>
     <AssemblyVersion>3.0</AssemblyVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+	  <Version>3.0</Version>
+	  <FileVersion>3.0</FileVersion>
+	  <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/LANDIS-II-Foundation/Extension-Output-Wildlife-Habitat</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -16,13 +18,11 @@
     <PackageProjectUrl>http://www.landis-ii.org</PackageProjectUrl>
     <NeutralLanguage>English</NeutralLanguage>
     <Authors>USDA Forest Service</Authors>
-    <Product>Landis.Extension.Output.WildlifeHabitat-v2</Product>
-    <Copyright>USDA Forest Service</Copyright>
-    <Version>3.0</Version>
+    <Product>Landis.Extension.Output.WildlifeHabitat-v3</Product>
+    <Copyright>The LANDIS-II Foundation</Copyright>
     <PackageTags>LANDIS-II;Landis;Extension;Wildlife Habitat</PackageTags>
     <Description></Description>
-    <PackageReleaseNotes>.NET Standard 2.0 update.</PackageReleaseNotes>
-    <FileVersion>3.0</FileVersion>
+    <PackageReleaseNotes>LANDIS-II Core v8 update.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

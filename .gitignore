@@ -219,3 +219,5 @@ test/Core8-Wildlife3.0/Landis-log.txt
 test/Core8-Wildlife3.0/Landis-climate-log.txt
 /test/Core8-Wildlife3.0/Metadata
 /test/Core8-Wildlife3.0/output
+test/Core8-Wildlife3.0/Climate-future-annual-log.csv
+test/Core8-Wildlife3.0/Climate-spinup-annual-log.csv

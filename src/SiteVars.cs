@@ -1,6 +1,5 @@
 //  Authors:  Brian R. Miranda, Donald J. Brown
 
-using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.UniversalCohorts;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 {
     public static class SiteVars
     {
-        private static ISiteVar<ISiteCohorts> universalCohorts;
+        private static ISiteVar<SiteCohorts> cohorts;
 
         private static ISiteVar<string> prescriptionName;
         private static ISiteVar<byte> fireSeverity;
@@ -35,7 +34,7 @@ namespace Landis.Extension.Output.WildlifeHabitat
 
         public static void Initialize(List<ISuitabilityParameters> suitabilityParameters)
         {
-            universalCohorts = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.UniversalCohorts");
+            cohorts = PlugIn.ModelCore.GetSiteVar<SiteCohorts>("Succession.UniversalCohorts");
             prescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
             timeOfLastHarvest = PlugIn.ModelCore.GetSiteVar<int>("Harvest.TimeOfLastEvent");
             fireSeverity = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
@@ -53,11 +52,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
             suitabilityWeight = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double>>();
 
 
-            if (universalCohorts == null)
-            {
-                string mesg = string.Format("Cohorts are empty.  Please double-check that this extension is compatible with your chosen succession extension.");
-                throw new System.ApplicationException(mesg);
-            }
+            //if (universalCohorts == null)
+            //{
+            //    string mesg = string.Format("Cohorts are empty.  Please double-check that this extension is compatible with your chosen succession extension.");
+            //    throw new System.ApplicationException(mesg);
+            //}
 
             foreach (Site site in PlugIn.ModelCore.Landscape.ActiveSites)
             {
@@ -140,11 +139,11 @@ namespace Landis.Extension.Output.WildlifeHabitat
         }
        
         //---------------------------------------------------------------------
-        public static ISiteVar<ISiteCohorts> UniversalCohorts
+        public static ISiteVar<SiteCohorts> Cohorts
         {
             get
             {
-                return universalCohorts;
+                return cohorts;
             }
         }
         //---------------------------------------------------------------------
